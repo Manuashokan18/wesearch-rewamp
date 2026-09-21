@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { CTASection } from "@/components/sections/CTASection";
+import { SectionIntro } from "@/components/sections/SectionIntro";
+import { VideoCard } from "@/components/sections/VideoCard";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -37,22 +39,32 @@ export default function AboutPage() {
         subtitle="Our vision is to enable enterprises to build an efficient, effective and sustainable workforce — combining strategic workforce design with technology tools that integrate human psychology principles."
       />
 
-      <section className="mx-auto max-w-4xl px-6 py-20">
-        <h2 className="text-3xl font-semibold text-ink sm:text-4xl">Our Mission</h2>
-        <p className="mt-6 text-subtle">
-          WeSearch&apos;s mission is to help organizations develop efficient,
-          effective, and sustainable workforces through our strategies and
-          products. We address modern workforce challenges — particularly
-          around digitalization and generational change — by developing
-          flexible workforce strategies aligned with organizational goals,
-          with continuous evaluation and intervention mechanisms to build the
-          right human capital.
-        </p>
+      {/*
+       * The handshake video moved here from the home page's Why Choose section
+       * (client review, 2026-09-21). Kept so it can be checked and reused.
+       */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <SectionIntro eyebrow="Our Mission" title="Building Workforces That Last" />
+            <p className="mt-6 text-subtle">
+              WeSearch&apos;s mission is to help organizations develop efficient,
+              effective, and sustainable workforces through our strategies and
+              products. We address modern workforce challenges — particularly
+              around digitalization and generational change — by developing
+              flexible workforce strategies aligned with organizational goals,
+              with continuous evaluation and intervention mechanisms to build the
+              right human capital.
+            </p>
+          </div>
+
+          <VideoCard src="/handshake.mp4" caption="Partner with us for smarter hiring solutions." />
+        </div>
       </section>
 
       <section className="border-t border-line bg-muted">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">Our Values</h2>
+          <SectionIntro eyebrow="Our Values" title="What We Stand For" />
           <div className="mt-10 flex flex-wrap gap-3">
             {values.map((value) => (
               <span
@@ -67,7 +79,7 @@ export default function AboutPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-3xl font-semibold text-ink sm:text-4xl">Our Journey</h2>
+        <SectionIntro eyebrow="Our Journey" title="Milestones Along the Way" />
         <div className="mt-10 space-y-6">
           {timeline.map((entry) => (
             <div key={entry.year} className="flex gap-6 border-l-2 border-line pl-6">
@@ -80,12 +92,11 @@ export default function AboutPage() {
 
       <section className="border-t border-line bg-muted">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">How We Deliver</h2>
-          <p className="mt-6 max-w-2xl text-subtle">
-            Our delivery model brings together dedicated teams, defined
-            processes, technology-enabled reporting and regular governance to
-            create consistency across client requirements.
-          </p>
+          <SectionIntro
+            eyebrow="How We Deliver"
+            title="A Structured Approach to Workforce Delivery"
+            subtitle="Our delivery model brings together dedicated teams, defined processes, technology-enabled reporting and regular governance to create consistency across client requirements."
+          />
           <div className="mt-10">
             <CardGrid
               items={deliverySteps}
@@ -93,7 +104,7 @@ export default function AboutPage() {
               columns={3}
               renderItem={(step) => (
                 <div className="rounded-2xl border border-line bg-surface p-6">
-                  <h3 className="font-semibold text-ink">{step.title}</h3>
+                  <h3 className="text-card text-ink">{step.title}</h3>
                   <p className="mt-2 text-sm text-subtle">{step.description}</p>
                 </div>
               )}
@@ -103,10 +114,18 @@ export default function AboutPage() {
       </section>
 
       <CTASection
+        eyebrow="Work With Us"
         title="Let's Build Your Workforce"
         description="Whether you are hiring for a critical role, scaling a team, building a GCC or looking for structured workforce support, let's discuss how WeSearch can help."
         primaryCta={{ label: "Request Talent", href: "/contact" }}
         secondaryCta={{ label: "Talk to Our Team", href: "/contact" }}
+        showDecoration
+        image={{
+          src: "/build-your-workforce.png",
+          alt: "Build winning teams with WeSearch",
+          width: 1774,
+          height: 887,
+        }}
       />
     </>
   );

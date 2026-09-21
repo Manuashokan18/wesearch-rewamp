@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
 import {
   SlidersHorizontal,
   Cpu,
   Target,
   Search,
+  User,
   Users,
   CheckCircle2,
   Rocket,
@@ -17,13 +16,17 @@ import {
   Building2,
   UserCheck,
 } from "lucide-react";
-import { Hero } from "@/components/sections/Hero";
+import { HomeHero } from "@/components/sections/HomeHero";
+import { IndustriesSection } from "@/components/sections/IndustriesSection";
+import { ScaleJourney } from "@/components/sections/ScaleJourney";
 import { CardGrid } from "@/components/sections/CardGrid";
+import { InteractiveTravelCard } from "@/components/ui/3d-card";
+import { ImageCards } from "@/components/ui/cards";
+import { CredentialTicker } from "@/components/sections/CredentialTicker";
 import { CTASection } from "@/components/sections/CTASection";
-import { ProcessSteps } from "@/components/sections/ProcessSteps";
-import { VideoCard } from "@/components/sections/VideoCard";
+import { Eyebrow } from "@/components/sections/SectionIntro";
 import { Button } from "@/components/ui/Button";
-import { services } from "@/lib/data/services";
+import { clientLogos, credentials } from "@/lib/data/company";
 
 const heroFeatures = [
   { icon: SlidersHorizontal, label: "Flexible Hiring" },
@@ -31,180 +34,231 @@ const heroFeatures = [
   { icon: Target, label: "Industry Focused" },
 ];
 
+/**
+ * The photographs that take turns behind the headline — people and business
+ * in motion. Saved at full width in /public; the hero's keyframes are timed
+ * for exactly five.
+ */
+const heroBackdrop = [
+  "/home-hero-1.jpg",
+  "/home-hero-2.jpg",
+  "/home-hero-3.jpg",
+  "/home-hero-4.jpg",
+  "/home-hero-5.jpg",
+];
+
+const heroBadge = {
+  label: "50,000+ placements across six industries",
+  href: "/services",
+  icon: TrendingUp,
+};
+
+/**
+ * The two doors. Companies hiring take the solid button, candidates the soft
+ * one, so neither audience is funnelled into the other's journey.
+ */
+const heroPrimaryCta = {
+  label: "Request Talent",
+  href: "/contact",
+  icon: Building2,
+};
+
+/** Explore Our Services is the content doc's secondary button; View Open Roles keeps the candidate door. */
+const heroSecondaryCtas = [
+  { label: "Explore Our Services", href: "/services" },
+  { label: "View Open Roles", href: "/careers" },
+];
+
+/** Unsplash stock photography, sized at source so the optimiser starts small. */
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=80`;
+
 const pillars = [
   {
     title: "Structured Processes",
     description: "Clearly defined recruitment and workforce processes.",
     icon: ClipboardList,
+    image: unsplash("1552664730-d307ca884978"),
   },
   {
     title: "Responsive Delivery",
     description: "Focused on speed without compromising quality.",
     icon: Zap,
+    image: unsplash("1522071820081-009f0129c71c"),
   },
   {
     title: "Scalable Capability",
     description: "Designed to support changing workforce volumes.",
     icon: TrendingUp,
+    image: unsplash("1504384308090-c894fdcc538d"),
   },
   {
     title: "Technology & Visibility",
     description: "Data-driven tracking, reporting and management.",
     icon: BarChart3,
+    image: unsplash("1551288049-bebda4e38f71"),
   },
   {
     title: "Governance & Accountability",
     description: "Defined ownership, SLAs and review mechanisms.",
     icon: ShieldCheck,
+    image: unsplash("1454165804606-c3d57bc86b40"),
   },
   {
     title: "Long-Term Partnerships",
     description: "Building sustainable relationships with clients and talent.",
     icon: Handshake,
+    image: unsplash("1521791136064-7986c2920216"),
   },
 ];
 
-const stats = [
-  { value: "500+", label: "Happy Clients" },
-  { value: "10+", label: "Years of Experience" },
-  { value: "50,000+", label: "Candidates Placed" },
-];
-
+/** Every engagement, first brief to onboarding, in the order it happens. */
 const processSteps = [
   {
-    number: "01",
+    tag: "Step 01",
     icon: Search,
     title: "Understand Your Needs",
     description: "We learn about your business, goals and hiring requirements.",
+    image: unsplash("1517245386807-bb43f82c33c4"),
   },
   {
-    number: "02",
+    tag: "Step 02",
     icon: Users,
     title: "Source & Screen",
     description: "We find the best candidates and shortlist the right fit.",
+    image: unsplash("1586281380349-632531db7ed4"),
   },
   {
-    number: "03",
+    tag: "Step 03",
     icon: CheckCircle2,
     title: "Interviews & Selection",
     description: "You meet, evaluate and choose the best talent.",
+    image: unsplash("1551836022-d5d88e9218df"),
   },
   {
-    number: "04",
+    tag: "Step 04",
     icon: Rocket,
     title: "Onboarding & Support",
     description: "We ensure a smooth transition and long-term success.",
+    image: unsplash("1600880292203-757bb62b4baf"),
   },
 ];
 
-const industriesServed = [
-  "Technology & IT",
-  "Banking & Financial Services",
-  "Telecom",
-  "Engineering & Manufacturing",
-  "E-commerce & Consumer",
-  "Logistics & Transportation",
+/** One delivery model at every size of engagement. */
+const scaleSteps = [
+  { icon: User, value: "10", label: "Single requirements" },
+  { icon: Users, value: "100", label: "Growing teams" },
+  { icon: Building2, value: "1,000+", label: "Large-scale workforce programs" },
 ];
 
+const scaleFeatures = {
+  left: {
+    image: unsplash("1573497620053-ea5300f94f21"),
+    icon: Users,
+    lead: "We find",
+    label: "the right people",
+  },
+  right: {
+    image: unsplash("1512453979798-5ea266f8880c"),
+    icon: BarChart3,
+    lead: "Scalable",
+    label: "talent solutions",
+  },
+};
+
+/** What each side of the table gets from us: who it is for, then the promise. */
 const commitments = [
   {
-    title: "For Clients",
-    description: "This means dependable workforce support.",
+    tag: "For Clients",
+    title: "This means dependable workforce support.",
     icon: Building2,
+    image: unsplash("1542744173-8e7e53415bb0"),
   },
   {
-    title: "For Candidates",
-    description: "It means access to meaningful opportunities.",
+    tag: "For Candidates",
+    title: "It means access to meaningful opportunities.",
     icon: UserCheck,
+    image: unsplash("1598257006458-087169a1f08d"),
   },
   {
-    title: "For Our Partners",
-    description: "It means transparent and accountable engagement.",
+    tag: "For Our Partners",
+    title: "It means transparent and accountable engagement.",
     icon: Handshake,
+    image: unsplash("1600880292089-90a7e086ee0c"),
   },
 ];
 
 export default function Home() {
   return (
     <>
-      <Hero
+      <HomeHero
+        badge={heroBadge}
         eyebrow="Your Talent Partner"
         title="Building the Workforce That Moves Your Business Forward"
         highlight="Forward"
         subtitle="WeSearch helps organizations build, scale and manage their workforce through structured recruitment, staffing and workforce solutions. From permanent hiring and contract staffing to Contract-to-Hire, RPO, GCC hiring and MSP-aligned workforce solutions, we combine talent expertise with a disciplined, scalable delivery approach."
-        primaryCta={{ label: "Request Talent →", href: "/contact" }}
-        secondaryCta={{ label: "Explore Our Services", href: "/services" }}
+        primaryCta={heroPrimaryCta}
+        secondaryCtas={heroSecondaryCtas}
         features={heroFeatures}
-        image={{ src: "/hero-people.png", alt: "WeSearch team collaborating" }}
-        showDecoration
+        logos={clientLogos}
+        backdrop={heroBackdrop}
       />
 
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <p className="mb-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-          <span className="h-px w-8 bg-accent" />
-          Introduction
-          <span className="h-px w-8 bg-accent" />
-        </p>
-        <h2 className="text-3xl font-bold text-ink sm:text-4xl">
-          Workforce Solutions Built Around Your Business
-        </h2>
-        <p className="mt-6 text-subtle">
-          Every organization has different workforce requirements — from
-          building specialist teams to managing high-volume hiring and
-          scaling operations across locations.
-        </p>
-        <p className="mt-4 text-subtle">
-          At WeSearch, we bring together recruitment expertise, workforce
-          delivery and technology-enabled processes to help organizations
-          respond to changing talent demands.
-        </p>
-        <p className="mt-4 text-subtle">
-          Our approach is built around quality, responsiveness, structured
-          delivery and long-term partnerships, with capabilities designed to
-          evolve as our clients&apos; workforce needs grow.
-        </p>
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
+          <div>
+            <Eyebrow>Introduction</Eyebrow>
+            <h2 className="text-section-lg text-ink">
+              Workforce Solutions Built Around Your Business
+            </h2>
+          </div>
+          <div className="max-w-[58ch] space-y-4 text-lg leading-relaxed text-subtle">
+            <p>
+              Every organization has different workforce requirements — from
+              building specialist teams to managing high-volume hiring and scaling
+              operations across locations.
+            </p>
+            <p>
+              At WeSearch, we bring together recruitment expertise, workforce
+              delivery and technology-enabled processes to help organizations
+              respond to changing talent demands.
+            </p>
+            <p>
+              Our approach is built around quality, responsiveness, structured
+              delivery and long-term partnerships, with capabilities designed to
+              evolve as our clients&apos; workforce needs grow.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section className="border-t border-line bg-muted">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-                <span className="h-px w-8 bg-accent" />
-                Our Services
-              </p>
-              <h2 className="max-w-xl text-3xl font-bold text-ink sm:text-4xl">
-                Solutions for Every Stage of Your Workforce Journey
-              </h2>
-            </div>
-            <Image
-              src="/services-collage.png"
-              alt="WeSearch team helping clients find the right talent"
-              width={960}
-              height={836}
-              className="hidden w-full max-w-xs lg:block xl:max-w-sm"
-            />
-          </div>
-
-          <div className="mt-12">
+      {/* A light blue ground, so this section reads as its own band between the white sections above and the navy one below. */}
+      <section className="bg-tint">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <Eyebrow>Why WeSearch</Eyebrow>
+          <h2 className="max-w-xl text-section-lg text-ink">
+            Built Around Delivery. Driven by Outcomes.
+          </h2>
+          <p className="mt-4 max-w-2xl text-subtle">
+            We believe workforce solutions are more than simply finding
+            candidates. They require process discipline, responsiveness,
+            visibility and accountability across the entire hiring and
+            workforce lifecycle.
+          </p>
+          <p className="mt-10 text-eyebrow text-ink">Our delivery approach focuses on:</p>
+          <div className="mt-6">
             <CardGrid
-              items={services}
-              keyExtractor={(service) => service.slug}
-              renderItem={(service) => (
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-sm">
-                  <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${service.colorClass}`}
-                  >
-                    <service.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 font-semibold text-ink">{service.title}</h3>
-                  <p className="mt-2 flex-1 text-sm text-subtle">{service.description}</p>
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="mt-4 text-sm font-medium text-accent hover:underline"
-                  >
-                    {service.cta} →
-                  </Link>
+              items={pillars}
+              keyExtractor={(pillar) => pillar.title}
+              renderItem={(pillar) => (
+                <div className="perspective-[1000px]">
+                  <InteractiveTravelCard
+                    title={pillar.title}
+                    subtitle={pillar.description}
+                    imageUrl={pillar.image}
+                    icon={<pillar.icon className="h-5 w-5" />}
+                    className="w-full"
+                  />
                 </div>
               )}
             />
@@ -212,195 +266,114 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-          <span className="h-px w-8 bg-accent" />
-          Why WeSearch
-        </p>
-        <h2 className="max-w-xl text-3xl font-bold text-ink sm:text-4xl">
-          Built Around Delivery. Driven by Outcomes.
-        </h2>
-        <p className="mt-4 max-w-2xl text-subtle">
-          We believe workforce solutions are more than simply finding
-          candidates. They require process discipline, responsiveness,
-          visibility and accountability across the entire hiring and
-          workforce lifecycle.
-        </p>
-        <div className="mt-12">
-          <CardGrid
-            items={pillars}
-            keyExtractor={(pillar) => pillar.title}
-            renderItem={(pillar) => (
-              <div className="rounded-2xl border border-line p-6">
-                <pillar.icon className="h-6 w-6 text-accent" />
-                <h3 className="mt-4 font-semibold text-ink">{pillar.title}</h3>
-                <p className="mt-2 text-sm text-subtle">{pillar.description}</p>
-              </div>
-            )}
-          />
-        </div>
-      </section>
+      <section className="relative overflow-hidden bg-navy text-white">
+        <div
+          className="pointer-events-none absolute -left-40 -top-40 size-[34rem] rounded-full bg-accent/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-40 -right-40 size-[34rem] rounded-full bg-accent-soft/15 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.35)_1px,transparent_1px)] [background-size:22px_22px] opacity-15"
+          aria-hidden="true"
+        />
 
-      <section className="bg-navy text-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2">
-          <div>
-            <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-              <span className="h-px w-8 bg-accent" />
+        <div className="relative mx-auto max-w-6xl px-6 pt-14 text-center lg:pt-16">
+          {/* Wide enough for the headline to sit on one line from laptop width up. */}
+          <div className="mx-auto max-w-4xl">
+            <Eyebrow center bracketed>
               Why Choose WeSearch
-            </p>
-            <h2 className="text-3xl font-bold sm:text-4xl">
+            </Eyebrow>
+            <h2 className="text-balance text-section-lg">
               More Than Recruitment. We Build Lasting Teams.
             </h2>
-            <p className="mt-4 max-w-md text-white/70">
+            <p className="mx-auto mt-4 max-w-xl text-white/70">
               Our focus is on understanding your unique needs, leveraging
               technology and delivering talent that creates real business
               impact.
             </p>
-            <div className="mt-8">
+            <div className="mt-6">
               <Button href="/about" variant="outlineInverse">
                 Learn More →
               </Button>
             </div>
-
-            <div className="mt-12 grid grid-cols-3 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-3xl font-bold text-accent sm:text-4xl">{stat.value}</p>
-                  <p className="mt-1 text-sm text-white/60">{stat.label}</p>
-                </div>
-              ))}
-            </div>
           </div>
-
-          <VideoCard src="/handshake.mp4" caption="Partner with us for smarter hiring solutions." />
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-          <span className="h-px w-8 bg-accent" />
-          How We Deliver
-        </p>
-        <h2 className="max-w-xl text-3xl font-bold text-ink sm:text-4xl">
-          A Structured Approach to Workforce Delivery
-        </h2>
-        <p className="mt-4 max-w-2xl text-subtle">
-          Our delivery model brings together dedicated teams, defined
-          processes, technology-enabled reporting and regular governance to
-          create consistency across client requirements. From requirement
-          intake and talent identification through submission, interview,
-          selection, onboarding and workforce management, we focus on
-          creating a transparent and accountable delivery experience.
-        </p>
-        <div className="mt-8">
-          <Button href="/about" variant="outline">
-            Explore How We Deliver →
-          </Button>
         </div>
 
-        <div className="mt-12">
-          <ProcessSteps steps={processSteps} />
-        </div>
+        {/* The credentials keep moving, edge to edge, so the figures are the section. */}
+        <CredentialTicker
+          credentials={credentials}
+          className="relative mt-10 pb-14 lg:mt-12 lg:pb-16"
+        />
       </section>
 
       <section className="border-t border-line bg-muted">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-            <span className="h-px w-8 bg-accent" />
-            Industries We Support
-          </p>
-          <h2 className="max-w-xl text-3xl font-bold text-ink sm:text-4xl">
-            Talent Solutions Across Growing Industries
-          </h2>
-          <p className="mt-4 max-w-2xl text-subtle">
-            Our recruitment and workforce solutions can support organizations
-            across multiple industries and business environments.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {industriesServed.map((industry) => (
-              <span
-                key={industry}
-                className="inline-flex items-center rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink"
-              >
-                {industry}
-              </span>
-            ))}
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mx-auto max-w-2xl text-center">
+            <Eyebrow center bracketed>
+              How We Deliver
+            </Eyebrow>
+            <h2 className="text-section-lg text-ink">
+              A Structured Approach to Workforce Delivery
+            </h2>
+            <p className="mx-auto mt-4 text-subtle">
+              Our delivery model brings together dedicated teams, defined
+              processes, technology-enabled reporting and regular governance to
+              create consistency across client requirements.
+            </p>
+            <p className="mx-auto mt-3 text-subtle">
+              From requirement intake and talent identification through
+              submission, interview, selection, onboarding and workforce
+              management, we focus on creating a transparent and accountable
+              delivery experience.
+            </p>
+          </div>
+
+          <ImageCards items={processSteps} ordered className="mt-12 lg:grid-cols-4" />
+
+          <div className="mt-12 text-center">
+            <Button href="/about" variant="outline">
+              Explore How We Deliver →
+            </Button>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <p className="mb-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-          <span className="h-px w-8 bg-accent" />
-          Supporting Organizations as They Scale
-          <span className="h-px w-8 bg-accent" />
-        </p>
-        <h2 className="text-3xl font-bold text-ink sm:text-4xl">
-          From Hiring Needs to Workforce Growth
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-subtle">
-          Organizations may engage us for a single critical requirement, a
-          growing contract workforce, a new team, or a broader hiring
-          program. Our objective is to build capabilities that can grow with
-          those requirements — from focused recruitment support to
-          multi-client, multi-location workforce delivery.
-        </p>
-        <p className="mt-10 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-          10 <span className="text-accent">→</span> 100{" "}
-          <span className="text-accent">→</span> 1,000+
-        </p>
-        <p className="mt-3 text-sm text-subtle">
-          Our delivery model is designed to evolve with workforce scale.
-        </p>
-      </section>
+      <IndustriesSection />
+
+      <ScaleJourney
+        eyebrow="Supporting Organizations as They Scale"
+        title="From Hiring Needs to"
+        highlight="Workforce Growth"
+        description="Organizations may engage us for a single critical requirement, a growing contract workforce, a new team, or a broader hiring program. Our objective is to build capabilities that can grow with those requirements — from focused recruitment support to multi-client, multi-location workforce delivery."
+        steps={scaleSteps}
+        left={scaleFeatures.left}
+        right={scaleFeatures.right}
+        annotation={"People\nPower\nProgress"}
+        note="Our delivery model is designed to evolve with workforce scale."
+        tagline="Right Talent. Real Impact."
+      />
 
       <section className="border-t border-line bg-muted">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-            <span className="h-px w-8 bg-accent" />
-            Our Commitment
-          </p>
-          <h2 className="max-w-xl text-3xl font-bold text-ink sm:text-4xl">
-            Quality Talent. Structured Delivery. Lasting Partnerships.
-          </h2>
-          <p className="mt-4 max-w-2xl text-subtle">
-            We are committed to creating better outcomes for organizations
-            and professionals by combining market understanding with
-            disciplined execution.
-          </p>
-          <div className="mt-12">
-            <CardGrid
-              items={commitments}
-              keyExtractor={(commitment) => commitment.title}
-              columns={3}
-              renderItem={(commitment) => (
-                <div className="rounded-2xl border border-line bg-surface p-6">
-                  <commitment.icon className="h-6 w-6 text-accent" />
-                  <h3 className="mt-4 font-semibold text-ink">{commitment.title}</h3>
-                  <p className="mt-2 text-sm text-subtle">{commitment.description}</p>
-                </div>
-              )}
-            />
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mx-auto max-w-2xl text-center">
+            <Eyebrow center bracketed>
+              Our Commitment
+            </Eyebrow>
+            <h2 className="text-section-lg text-ink">
+              Quality Talent. Structured Delivery. Lasting Partnerships.
+            </h2>
+            <p className="mx-auto mt-4 text-subtle">
+              We are committed to creating better outcomes for organizations and
+              professionals by combining market understanding with disciplined
+              execution.
+            </p>
           </div>
-        </div>
-      </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <p className="mb-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-          <span className="h-px w-8 bg-accent" />
-          Insights
-          <span className="h-px w-8 bg-accent" />
-        </p>
-        <h2 className="text-3xl font-bold text-ink sm:text-4xl">
-          Understanding the Workforce Behind Business Growth
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-subtle">
-          The talent market is changing rapidly. Hiring models, GCC
-          expansion, technology skills, contract workforce requirements and
-          employee expectations continue to evolve. Through our insights and
-          market perspectives, we aim to share practical observations that
-          help organizations make better workforce decisions.
-        </p>
+          <ImageCards items={commitments} className="mt-12" />
+        </div>
       </section>
 
       <CTASection

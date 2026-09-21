@@ -1,10 +1,12 @@
 import Image from "next/image";
-import { Send } from "lucide-react";
+import { Send, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Annotation } from "@/components/ui/Annotation";
+import { Eyebrow } from "@/components/sections/SectionIntro";
 
 type Cta = { label: string; href: string };
 type CTAImage = { src: string; alt: string; width: number; height: number };
+type CTAHighlight = { icon: LucideIcon; label: string };
 
 type CTASectionProps = {
   eyebrow?: string;
@@ -15,6 +17,8 @@ type CTASectionProps = {
   showDecoration?: boolean;
   image?: CTAImage;
   annotation?: string;
+  /** Short assurances in a row beneath the buttons. */
+  highlights?: CTAHighlight[];
 };
 
 export function CTASection({
@@ -26,6 +30,7 @@ export function CTASection({
   showDecoration = false,
   image,
   annotation,
+  highlights,
 }: CTASectionProps) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">
@@ -36,12 +41,9 @@ export function CTASection({
       >
         <div>
           {eyebrow && (
-            <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-              <span className="h-px w-8 bg-accent" />
-              {eyebrow}
-            </p>
+            <Eyebrow>{eyebrow}</Eyebrow>
           )}
-          <h2 className="max-w-lg text-3xl font-bold text-ink sm:text-4xl">{title}</h2>
+          <h2 className="max-w-lg text-section-lg text-ink">{title}</h2>
           {description && <p className="mt-4 max-w-md text-subtle">{description}</p>}
           <div className="mt-8 flex flex-wrap gap-4">
             <Button href={primaryCta.href}>{primaryCta.label}</Button>
@@ -51,6 +53,17 @@ export function CTASection({
               </Button>
             )}
           </div>
+
+          {highlights && highlights.length > 0 && (
+            <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-accent/15 pt-6">
+              {highlights.map((highlight) => (
+                <li key={highlight.label} className="flex items-center gap-2 text-sm text-ink/75">
+                  <highlight.icon className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                  {highlight.label}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {showDecoration && (

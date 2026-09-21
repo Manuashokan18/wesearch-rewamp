@@ -1,105 +1,138 @@
+import type { ComponentType } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 import { primaryNav } from "@/lib/nav";
 import { services } from "@/lib/data/services";
-import { LinkedInIcon, XIcon, YouTubeIcon } from "@/components/ui/SocialIcons";
+import { publicEmail } from "@/lib/config/site";
+import { AnimatedContainer } from "@/components/ui/animated-container";
+import { HomeVersionLink } from "@/components/layout/HomeVersionLink";
+import { LinkedInIcon } from "@/components/ui/SocialIcons";
 
-const quickLinks = primaryNav.map((item) => ({ label: item.label, href: item.href }));
+type FooterLink = {
+  label: string;
+  /** Omit for plain text, such as a location. */
+  href?: string;
+  icon?: ComponentType<{ className?: string }>;
+};
 
-const socialLinks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/wesearchinc/", icon: LinkedInIcon },
-  { label: "X", href: "#", icon: XIcon },
-  { label: "YouTube", href: "#", icon: YouTubeIcon },
+type FooterColumn = { label: string; links: FooterLink[] };
+
+const columns: FooterColumn[] = [
+  {
+    label: "Quick Links",
+    links: primaryNav.map((item) => ({ label: item.label, href: item.href })),
+  },
+  {
+    label: "Our Services",
+    links: services.map((service) => ({
+      label: service.shortTitle,
+      href: `/services/${service.slug}`,
+    })),
+  },
+  {
+    label: "Get In Touch",
+    links: [
+      { label: publicEmail, href: `mailto:${publicEmail}`, icon: Mail },
+      { label: "India & UAE", icon: MapPin },
+    ],
+  },
+  {
+    label: "Social",
+    links: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/wesearchinc/", icon: LinkedInIcon },
+    ],
+  },
 ];
 
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+];
+
+const isExternal = (href: string) => /^https?:\/\//.test(href);
+
+function FooterItem({ link }: { link: FooterLink }) {
+  const content = (
+    <>
+      {link.icon && <link.icon className="size-4 shrink-0 text-accent-soft" aria-hidden="true" />}
+      <span className="min-w-0 break-words">{link.label}</span>
+    </>
+  );
+
+  if (!link.href) {
+    return <span className="inline-flex items-center gap-2">{content}</span>;
+  }
+
+  return (
+    <Link
+      href={link.href}
+      {...(isExternal(link.href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-white"
+    >
+      {content}
+    </Link>
+  );
+}
+
+/**
+ * Site footer, after efferd's "Footer Section" on 21st.dev: a panel with a
+ * rounded top edge, a soft glow and a blurred highlight line along the top,
+ * the brand on the left and the link columns sharpening into view in turn.
+ * Recoloured onto the WeSearch navy with the accent as the glow. Only the
+ * entrance needs the browser, so the columns stay server-rendered inside
+ * `AnimatedContainer`.
+ */
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-navy text-white">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1.2fr_1fr]">
-          <div>
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/icon-mark.png" alt="" width={800} height={800} className="h-7 w-7" />
-              <span className="text-lg font-semibold text-white">WeSearch</span>
-            </Link>
-            <p className="mt-3 text-sm text-white/50">Right Talent. Real Impact.</p>
-          </div>
+    <footer className="relative w-full rounded-t-[2.5rem] border-t border-white/15 bg-navy bg-[radial-gradient(40%_160px_at_50%_0%,color-mix(in_oklch,var(--color-accent)_28%,transparent),transparent)] text-white md:rounded-t-[4rem]">
+      <div
+        className="absolute left-1/2 top-0 h-px w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-soft/80 blur"
+        aria-hidden="true"
+      />
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-white/50">
-              Quick Links
-            </h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-white/80 hover:text-white">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-white/50">
-              Our Services
-            </h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              {services.map((service) => (
-                <li key={service.slug}>
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="text-white/80 hover:text-white"
-                  >
-                    {service.shortTitle}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-white/50">
-              Get In Touch
-            </h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li className="flex items-center gap-2 text-white/80">
-                <Mail className="h-4 w-4 text-accent" />
-                info@wesearchinc.com
-              </li>
-              <li className="flex items-center gap-2 text-white/80">
-                <MapPin className="h-4 w-4 text-accent" />
-                India &amp; UAE
-              </li>
-            </ul>
-            <div className="mt-5 flex gap-3">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith("http") ? "_blank" : undefined}
-                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/80 hover:border-accent hover:text-accent"
-                >
-                  <social.icon className="h-4 w-4" />
+      <div className="mx-auto grid max-w-6xl gap-8 px-6 py-14 lg:py-20 xl:grid-cols-3">
+        <AnimatedContainer className="space-y-4">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <Image src="/icon-mark.png" alt="" width={800} height={800} className="size-8" />
+            <span className="text-lg font-semibold">WeSearch</span>
+          </Link>
+          <p className="text-sm text-white/60">Right Talent. Real Impact.</p>
+          <p className="mt-8 text-sm text-white/50 xl:mt-10">
+            &copy; {new Date().getFullYear()} WeSearch. All rights reserved.
+          </p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/50">
+            {legalLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="transition-colors duration-300 hover:text-white">
+                  {link.label}
                 </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+              </li>
+            ))}
+            {/* TEMPORARY: moves between the two home page versions (see lib/nav.ts). */}
+            <li>
+              <HomeVersionLink className="text-accent-soft transition-colors duration-300 hover:text-white" />
+            </li>
+          </ul>
+        </AnimatedContainer>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <span>&copy; {new Date().getFullYear()} WeSearch. All rights reserved.</span>
-          <div className="flex gap-4">
-            <Link href="/privacy-policy" className="hover:text-white">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-of-service" className="hover:text-white">
-              Terms of Service
-            </Link>
-          </div>
+        <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
+          {columns.map((column, index) => (
+            <AnimatedContainer key={column.label} delay={0.1 + index * 0.1}>
+              <div className="mb-10 md:mb-0">
+                <h3 className="text-xs font-medium uppercase tracking-wider text-white">
+                  {column.label}
+                </h3>
+                <ul className="mt-4 space-y-2.5 text-sm text-white/60">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      <FooterItem link={link} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimatedContainer>
+          ))}
         </div>
       </div>
     </footer>

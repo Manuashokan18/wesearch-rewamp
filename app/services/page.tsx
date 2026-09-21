@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Hero } from "@/components/sections/Hero";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { CTASection } from "@/components/sections/CTASection";
+import { SectionIntro } from "@/components/sections/SectionIntro";
 import { services } from "@/lib/data/services";
 
 export const metadata: Metadata = {
@@ -21,12 +22,18 @@ export default function ServicesPage() {
       />
 
       <section className="mx-auto max-w-6xl px-6 py-20">
+        <SectionIntro
+          eyebrow="What We Do"
+          title="Our Workforce Services"
+          subtitle="Six service lines covering the full workforce lifecycle — from a single permanent hire to fully managed, multi-location delivery."
+        />
+        <div className="mt-10" />
         <CardGrid
           items={services}
           keyExtractor={(service) => service.slug}
           renderItem={(service) => (
             <div className="flex h-full flex-col rounded-2xl border border-line p-6">
-              <h2 className="text-lg font-semibold text-ink">{service.title}</h2>
+              <h2 className="text-card text-ink">{service.title}</h2>
               <p className="mt-3 flex-1 text-sm text-subtle">{service.description}</p>
               <Link
                 href={`/services/${service.slug}`}
@@ -40,9 +47,17 @@ export default function ServicesPage() {
       </section>
 
       <CTASection
+        eyebrow="Next Step"
         title="Let's Build Your Workforce"
         description="Whether you are hiring for a critical role, scaling a team, building a GCC or looking for structured workforce support, let's discuss how WeSearch can help."
         primaryCta={{ label: "Request Talent", href: "/contact" }}
+        showDecoration
+        image={{
+          src: "/build-your-workforce.png",
+          alt: "Build winning teams with WeSearch",
+          width: 1774,
+          height: 887,
+        }}
       />
     </>
   );

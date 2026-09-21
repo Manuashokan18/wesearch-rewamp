@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Screens with room to spare vertically, for full-height heroes that tighten on short laptops. */
+@custom-variant tall (@media (min-height: 860px));
+
 /* Brand palette — deep navy + vivid blue, matched to the approved homepage design. */
 :root {
   --background: #ffffff;
@@ -13,6 +16,8 @@
   --color-line: #e3e7f0;
   --color-subtle: #64748b;
   --color-accent: #2f6fed;
+  /* Accent lifted for use on the navy ground, where #2f6fed reads muddy. */
+  --color-accent-soft: #5a96ff;
   --color-accent-foreground: #ffffff;
 }
 
@@ -28,13 +33,426 @@
   --color-line: var(--color-line);
   --color-subtle: var(--color-subtle);
   --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
   --color-accent-foreground: var(--color-accent-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-red-hat);
+}
+
+/*
+ * In-page anchors (Explore Our Solutions, Learn More) glide rather than jump.
+ * `data-scroll-behavior="smooth"` on <html> tells Next to switch it off for
+ * route changes, so a new page still opens at the top instantly.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/*
+ * Type scale — the single source of truth for headings across every page.
+ * Use these utilities instead of ad-hoc size and weight combinations so Home,
+ * Services, About, Careers and Contact stay visually consistent. Headings share
+ * the body's Red Hat Display, set bold with tighter tracking at display sizes.
+ *
+ *   text-hero      page hero <h1>
+ *   text-section-lg  primary section heading
+ *   text-section     standard section heading
+ *   text-subsection  heading inside a section
+ *   text-card        card and list-item heading
+ *   text-eyebrow     uppercase label above a heading
+ */
+@utility text-hero {
+  font-size: var(--text-4xl);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-weight: 700;
+  @variant sm {
+    font-size: var(--text-5xl);
+  }
+}
+
+@utility text-section-lg {
+  font-size: var(--text-3xl);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  font-weight: 700;
+  @variant sm {
+    font-size: var(--text-4xl);
+  }
+}
+
+@utility text-section {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  font-weight: 700;
+  @variant sm {
+    font-size: var(--text-3xl);
+  }
+}
+
+@utility text-subsection {
+  font-size: var(--text-xl);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+@utility text-card {
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+@utility text-eyebrow {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/*
+ * Home hero — one orchestrated entrance, played once on load.
+ *
+ * The board rises, its mandates follow in sequence, then each delivery rail
+ * fills. Nothing loops and nothing replays on scroll: the motion exists to
+ * show the pipeline advancing, not to decorate. Reduced motion drops straight
+ * to the finished state.
+ */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-rail {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-rail {
+  transform-origin: left center;
+  animation: hero-rail 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-rail {
+    animation: none;
+  }
+}
+
+/*
+ * Delivery board — the rails fill as the section scrolls into view, driven by
+ * CSS scroll-driven animation so the board stays a Server Component with no
+ * observer JS. Browsers without `animation-timeline` skip the reveal entirely
+ * and render the finished state, which is the information that matters.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .board-rail {
+      transform-origin: left center;
+      animation: hero-rail 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 25% cover 40%;
+    }
+  }
+}
+
+/*
+ * Vertical rail — the same scroll-driven fill as `board-rail`, running top to
+ * bottom, for the stacked (mobile) form of a process stepper.
+ */
+@keyframes hero-rail-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .board-rail-y {
+      transform-origin: center top;
+      animation: hero-rail-y 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 25% cover 40%;
+    }
+  }
+}
+
+/*
+ * Flow dot — a bead of light travelling down a connector, as in an animated
+ * beam. Reduced motion hides it, leaving the plain line.
+ */
+@keyframes flow-down {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(520%);
+    opacity: 0;
+  }
+}
+
+.flow-dot {
+  animation: flow-down 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-dot {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/*
+ * Beam card — a hairline ring of light around a card. The ring is a conic
+ * gradient masked down to a 1px border; `--beam-angle` is a registered
+ * property so the gradient's start angle can be animated. It rests as a faint,
+ * still arc and travels the edge while the card is hovered or has focus inside.
+ * Browsers without `@property`, and reduced motion, keep it still.
+ */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 200deg;
+  inherits: false;
+}
+
+@keyframes beam-spin {
+  to {
+    --beam-angle: 560deg;
+  }
+}
+
+.beam-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 230deg,
+    color-mix(in oklch, var(--color-accent-soft) 85%, transparent) 320deg,
+    #fff 352deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  animation: beam-spin 7s linear infinite paused;
+}
+
+.beam-card:hover::before,
+.beam-card:focus-within::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beam-card::before {
+    animation: none;
+  }
+}
+
+/*
+ * Process pillars — each bar is revealed from its foot as it scrolls into
+ * view. The reveal is a clip-path rather than a scale, so the number and icon
+ * inside never distort. Scroll-driven, like the rails above, and skipped
+ * where `animation-timeline` or motion is unavailable: the bars then simply
+ * render finished.
+ */
+@keyframes pillar-reveal {
+  from {
+    clip-path: inset(100% 0 0 0 round 1rem);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 1rem);
+  }
+}
+
+@keyframes pillar-reveal-x {
+  from {
+    clip-path: inset(0 100% 0 0 round 0.75rem);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0.75rem);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Fully revealed by the time the bar has entered the viewport. */
+    .pillar-bar {
+      animation: pillar-reveal-x 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 100%;
+    }
+
+    @media (min-width: 64rem) {
+      .pillar-bar {
+        animation-name: pillar-reveal;
+      }
+    }
+  }
+}
+
+/*
+ * Home hero backdrop — five photographs that take turns. Each one fades in,
+ * holds for its share of the cycle and fades out while drifting through a slow
+ * zoom, so the picture is always moving. The cycle is 30s: 6s a slide, with a
+ * 1.2s fade either side, hence the percentages below (4% = 1.2s, 24% = 7.2s,
+ * 28% = 8.4s). Each slide starts 6s after the last, and the first is started
+ * 1.2s in so the page opens on a fully visible photograph. The percentages
+ * assume exactly five slides. Reduced motion holds the first photograph still.
+ */
+@keyframes hero-slide {
+  0% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  4% {
+    opacity: 1;
+  }
+  24% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+}
+
+.hero-slide {
+  opacity: 0;
+  animation: hero-slide 30s linear infinite both;
+  animation-delay: calc(var(--slide) * 6s - 1.2s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    animation: none;
+    transform: none;
+  }
+
+  .hero-slide:first-of-type {
+    opacity: 1;
+  }
+}
+
+/*
+ * Credential ticker — a seamless loop over four identical copies of the row,
+ * shifting by exactly one copy (25% of the track) each 40s cycle so the last
+ * frame matches the first. Held still while the pointer or keyboard focus is
+ * on it so a figure can be read. Reduced motion stops it; the ticker then
+ * lays its cards out as a wrapped, static row instead. The 25% assumes four
+ * copies — keep it in step with COPIES in CredentialTicker.tsx.
+ */
+@keyframes credential-scroll {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.credential-ticker {
+  animation: credential-scroll 40s linear infinite;
+}
+
+/*
+ * The fade at both ends of the ticker: soft on a phone, wide from laptop width
+ * up. Plain CSS rather than utilities so the reduced-motion rule, which comes
+ * last, always wins over the breakpoint one.
+ */
+.credential-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@media (min-width: 64rem) {
+  .credential-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 22%, black 78%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 22%, black 78%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credential-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+.credential-ticker:hover,
+.credential-ticker:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credential-ticker {
+    animation: none;
+  }
+}
+
+/*
+ * Logo marquee — the row is rendered twice, each copy carrying an identical
+ * trailing gap, so shifting the pair by exactly half its width loops without
+ * a seam. Reduced motion parks it at the start.
+ */
+@keyframes logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee {
+  animation: logo-marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee {
+    animation: none;
+  }
 }

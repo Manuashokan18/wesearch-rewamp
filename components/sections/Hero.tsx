@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Annotation } from "@/components/ui/Annotation";
+import { Eyebrow } from "@/components/sections/SectionIntro";
 
 type HeroCta = { label: string; href: string };
 type HeroFeature = { icon: LucideIcon; label: string };
@@ -60,12 +61,9 @@ export function Hero({
       >
         <div className={showDecoration ? "flex flex-col justify-center py-4" : ""}>
           {eyebrow && (
-            <p className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-accent">
-              <span className="h-px w-8 bg-accent" />
-              {eyebrow}
-            </p>
+            <Eyebrow>{eyebrow}</Eyebrow>
           )}
-          <h1 className="max-w-xl text-4xl font-bold leading-tight sm:text-5xl">
+          <h1 className="max-w-xl text-hero">
             {renderTitle(title, highlight)}
           </h1>
           {subtitle && (

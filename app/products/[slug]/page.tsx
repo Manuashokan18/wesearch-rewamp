@@ -36,14 +36,14 @@ export default async function ProductDetailPage(
       />
 
       <section className="mx-auto max-w-4xl px-6 py-16">
-        <h2 className="text-xl font-semibold text-ink">Key Features</h2>
+        <h2 className="text-subsection text-ink">Key Features</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-subtle">
           {product.keyFeatures.map((feature) => (
             <li key={feature}>{feature}</li>
           ))}
         </ul>
 
-        <h2 className="mt-10 text-xl font-semibold text-ink">Benefits</h2>
+        <h2 className="mt-10 text-subsection text-ink">Benefits</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-subtle">
           {product.benefits.map((benefit) => (
             <li key={benefit}>{benefit}</li>
