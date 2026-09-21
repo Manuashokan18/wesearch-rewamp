@@ -17,7 +17,7 @@ export function HomeVersionLink({ className }: { className?: string }) {
 
   return (
     <Link href={onPrevious ? "/" : previousHomePath} className={className}>
-      {onPrevious ? "Current Landing Page" : "Previous Landing Page"}
+      {onPrevious ? "Current Landing Page" : "Landing Page 2"}
     </Link>
   );
 }
