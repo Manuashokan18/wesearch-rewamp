@@ -9,16 +9,21 @@ import { products } from "@/lib/data/products";
 export const previousHomePath = "/home-previous";
 
 /**
- * Pages whose hero runs up behind the header: the home page and every service
- * page, which open on a full-bleed image. The header starts transparent over
- * them, so the bar shows the hero itself, and turns solid once the page scrolls.
+ * Pages whose hero runs up behind the header: the home page, About, every
+ * service page and every product page with a designed hero, which open on a
+ * full-bleed image. The header starts transparent over them, so the bar shows
+ * the hero itself, and turns solid once the page scrolls.
  */
 export const overlayHeroPaths = [
   "/",
   previousHomePath,
+  "/about",
   ...services
     .filter((service) => service.detailPage)
     .map((service) => `/services/${service.slug}`),
+  ...products
+    .filter((product) => product.detailPage)
+    .map((product) => `/products/${product.slug}`),
 ];
 
 export type NavChild = {

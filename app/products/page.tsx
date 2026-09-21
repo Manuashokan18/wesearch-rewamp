@@ -1,56 +1,58 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Check } from "lucide-react";
 import { Hero } from "@/components/sections/Hero";
-import { CardGrid } from "@/components/sections/CardGrid";
 import { CTASection } from "@/components/sections/CTASection";
-import { SectionIntro } from "@/components/sections/SectionIntro";
-import { products } from "@/lib/data/products";
+import { Button } from "@/components/ui/Button";
+import { productSummary, products } from "@/lib/data/products";
 
 export const metadata: Metadata = {
   title: "Products",
-  description:
-    "LabelEase, Asset Tracker and PINT — workforce and operations technology from WeSearch.",
+  description: productSummary(products[0]),
 };
 
+/**
+ * The products page. PINT is the only product, so it is shown as one wide
+ * feature rather than a lone card in a grid. Every word about it — the name,
+ * headline, opening paragraph, feature names and closing statement — is the
+ * client's own PINT copy from `lib/data/products.ts`; the page adds none.
+ */
 export default function ProductsPage() {
+  const [product] = products;
+
   return (
     <>
-      <Hero
-        eyebrow="Products"
-        title="Technology That Supports Your Workforce"
-        subtitle="Alongside our recruitment and staffing services, we build products that support workforce operations, tracking and engagement."
-      />
+      <Hero title="Products" />
 
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <SectionIntro
-          eyebrow="Our Products"
-          title="Built for Workforce Operations"
-          subtitle="Practical tools that sit alongside our services to help teams track, label and stay connected."
-        />
-        <div className="mt-10" />
-        <CardGrid
-          items={products}
-          keyExtractor={(product) => product.slug}
-          renderItem={(product) => (
-            <div className="flex h-full flex-col rounded-2xl border border-line p-6">
-              <h2 className="text-card text-ink">{product.title}</h2>
-              <p className="mt-2 text-sm font-medium text-accent">{product.tagline}</p>
-              <p className="mt-3 flex-1 text-sm text-subtle">{product.description}</p>
-              <Link
-                href={`/products/${product.slug}`}
-                className="mt-4 text-sm font-medium text-accent hover:underline"
-              >
-                Explore {product.title} →
-              </Link>
-            </div>
-          )}
-        />
+        <article className="grid gap-10 rounded-3xl border border-line bg-white p-8 shadow-[0_1px_2px_rgba(11,22,56,0.04),0_24px_48px_-24px_rgba(11,22,56,0.18)] sm:p-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:p-12">
+          <div className="flex flex-col items-start justify-center">
+            <h2 className="text-section-lg text-ink">{product.title}</h2>
+            <p className="mt-3 text-lg font-medium text-accent">{product.headline}</p>
+            <p className="mt-5 text-subtle">{product.intro}</p>
+            <Button href={`/products/${product.slug}`} className="mt-8">
+              Explore {product.title} →
+            </Button>
+          </div>
+
+          <div className="rounded-2xl bg-tint p-6 sm:p-8">
+            <p className="text-eyebrow text-accent">Key Features</p>
+            <ul className="mt-5 space-y-3.5">
+              {product.keyFeatures.map((feature) => (
+                <li key={feature.title} className="flex items-start gap-3 text-sm text-ink/80">
+                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-white">
+                    <Check className="size-3" strokeWidth={3} aria-hidden="true" />
+                  </span>
+                  {feature.title}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
       </section>
 
       <CTASection
-        title="Want to See These in Action?"
-        description="Talk to our team about LabelEase, Asset Tracker or PINT."
-        primaryCta={{ label: "Talk to Our Team", href: "/contact" }}
+        title={product.closing.statement}
+        primaryCta={{ label: product.closing.ctaLabel, href: "/contact" }}
       />
     </>
   );

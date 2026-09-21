@@ -2,13 +2,15 @@
 
 import { useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type VideoCardProps = {
   src: string;
   caption: string;
+  className?: string;
 };
 
-export function VideoCard({ src, caption }: VideoCardProps) {
+export function VideoCard({ src, caption, className }: VideoCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -25,7 +27,7 @@ export function VideoCard({ src, caption }: VideoCardProps) {
   };
 
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+    <div className={cn("relative aspect-[4/3] overflow-hidden rounded-3xl", className)}>
       <video
         ref={videoRef}
         src={src}

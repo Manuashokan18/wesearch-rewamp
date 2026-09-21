@@ -1,9 +1,30 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/sections/Hero";
-import { CardGrid } from "@/components/sections/CardGrid";
+import {
+  BadgeCheck,
+  BarChart3,
+  ClipboardList,
+  FileCheck,
+  Gem,
+  Globe,
+  HeartHandshake,
+  Lightbulb,
+  MessagesSquare,
+  Rocket,
+  Server,
+  ShieldCheck,
+  UserCheck,
+  UserSearch,
+  Users,
+} from "lucide-react";
+import { PhotoHero } from "@/components/sections/PhotoHero";
 import { CTASection } from "@/components/sections/CTASection";
-import { SectionIntro } from "@/components/sections/SectionIntro";
-import { VideoCard } from "@/components/sections/VideoCard";
+import { credentials } from "@/lib/data/company";
+import { DeliverySection } from "./DeliverySection";
+import { JourneySection } from "./JourneySection";
+import { MissionSection } from "./MissionSection";
+import { StatsBand } from "./StatsBand";
+import { ValuesShowcase } from "./ValuesShowcase";
+import { unsplash } from "./parts";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,107 +32,166 @@ export const metadata: Metadata = {
     "WeSearch helps organizations build, nurture and retain an efficient, effective and sustainable workforce.",
 };
 
-const values = ["Quality", "Customer Focus", "Innovation", "Teamwork", "Reliability"];
+/**
+ * The values, each with the icon and the photograph that stand for it in the
+ * hero and in the Values section. The photographs are Unsplash stock, hot-linked
+ * and sized at source; the hero's own is saved in /public (see docs/README.md).
+ */
+const values = [
+  {
+    name: "Quality",
+    Icon: Gem,
+    photo: "1581090690925-3898802525e2",
+    position: "object-[50%_45%]",
+  },
+  {
+    name: "Customer Focus",
+    Icon: HeartHandshake,
+    photo: "1603202662706-62ead3176b8f",
+    position: "object-[70%_40%]",
+  },
+  {
+    name: "Innovation",
+    Icon: Lightbulb,
+    photo: "1676276376052-dc9c9c0b6917",
+    position: "object-[50%_40%]",
+  },
+  {
+    name: "Teamwork",
+    Icon: Users,
+    photo: "1579389083395-4507e98b5e67",
+    position: "object-[45%_30%]",
+  },
+  // The last value takes the tall frame in the middle of the mosaic (see ValuesShowcase).
+  {
+    name: "Reliability",
+    Icon: ShieldCheck,
+    photo: "1759310610325-2c7cb621e5e3",
+    position: "object-[50%_60%]",
+  },
+];
 
 const timeline = [
-  { year: "2008", milestone: "Company launched with establishment of the India office." },
-  { year: "2010", milestone: "Began IT managed services and outsourcing vertical." },
-  { year: "2012", milestone: "Opened Middle East regional headquarters in Dubai." },
-  { year: "2018", milestone: "Achieved ISO certification." },
-  { year: "2022", milestone: "Established a Center of Excellence with an Innovation Team in India." },
+  { year: "2008", milestone: "Company launched with establishment of the India office.", icon: Rocket },
+  { year: "2010", milestone: "Began IT managed services and outsourcing vertical.", icon: Server },
+  { year: "2012", milestone: "Opened Middle East regional headquarters in Dubai.", icon: Globe },
+  { year: "2018", milestone: "Achieved ISO certification.", icon: BadgeCheck },
+  {
+    year: "2022",
+    milestone: "Established a Center of Excellence with an Innovation Team in India.",
+    icon: Lightbulb,
+  },
 ];
 
 const deliverySteps = [
-  { title: "Requirement Intake", description: "Understanding role, team and business requirements in detail." },
-  { title: "Talent Identification", description: "Structured sourcing and market mapping against the requirement." },
-  { title: "Submission & Interview", description: "Coordinated submissions, screening and interview scheduling." },
-  { title: "Selection", description: "Supporting evaluation, feedback and offer decisions." },
-  { title: "Onboarding", description: "Managing documentation, offer rollout and joining formalities." },
-  { title: "Workforce Management", description: "Ongoing lifecycle, compliance and performance tracking." },
+  {
+    number: "01",
+    icon: ClipboardList,
+    title: "Requirement Intake",
+    description: "Understanding role, team and business requirements in detail.",
+  },
+  {
+    number: "02",
+    icon: UserSearch,
+    title: "Talent Identification",
+    description: "Structured sourcing and market mapping against the requirement.",
+  },
+  {
+    number: "03",
+    icon: MessagesSquare,
+    title: "Submission & Interview",
+    description: "Coordinated submissions, screening and interview scheduling.",
+  },
+  {
+    number: "04",
+    icon: UserCheck,
+    title: "Selection",
+    description: "Supporting evaluation, feedback and offer decisions.",
+  },
+  {
+    number: "05",
+    icon: FileCheck,
+    title: "Onboarding",
+    description: "Managing documentation, offer rollout and joining formalities.",
+  },
+  {
+    number: "06",
+    icon: BarChart3,
+    title: "Workforce Management",
+    description: "Ongoing lifecycle, compliance and performance tracking.",
+  },
+];
+
+/** The hero's short labels under the buttons: the company's values, as set out below. */
+const heroValues = values.map((value) => ({ icon: value.Icon, label: value.name }));
+
+/** The hero's glass bar: three facts taken straight from the milestones further down. */
+const heroFacts = [
+  { icon: Rocket, label: "Since 2008" },
+  { icon: Globe, label: "India & Dubai" },
+  { icon: BadgeCheck, label: "ISO Certified" },
 ];
 
 export default function AboutPage() {
   return (
     <>
-      <Hero
+      <PhotoHero
         eyebrow="About WeSearch"
         title="We Help You Identify, Nurture and Retain the Right People"
+        highlight="Right People"
         subtitle="Our vision is to enable enterprises to build an efficient, effective and sustainable workforce — combining strategic workforce design with technology tools that integrate human psychology principles."
+        primaryCta={{ label: "Request Talent", href: "/contact" }}
+        secondaryCta={{ label: "Explore Our Journey", href: "#journey" }}
+        features={heroValues}
+        badgeItems={heroFacts}
+        image={{
+          src: "/about-hero.jpg",
+          alt: "A diverse team gathered around a boardroom table with their laptops",
+        }}
       />
 
       {/*
        * The handshake video moved here from the home page's Why Choose section
        * (client review, 2026-09-21). Kept so it can be checked and reused.
        */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <SectionIntro eyebrow="Our Mission" title="Building Workforces That Last" />
-            <p className="mt-6 text-subtle">
-              WeSearch&apos;s mission is to help organizations develop efficient,
-              effective, and sustainable workforces through our strategies and
-              products. We address modern workforce challenges — particularly
-              around digitalization and generational change — by developing
-              flexible workforce strategies aligned with organizational goals,
-              with continuous evaluation and intervention mechanisms to build the
-              right human capital.
-            </p>
-          </div>
+      <MissionSection
+        eyebrow="Our Mission"
+        title="Building Workforces That Last"
+        lead="WeSearch's mission is to help organizations develop efficient, effective, and sustainable workforces through our strategies and products."
+        rest="We address modern workforce challenges — particularly around digitalization and generational change — by developing flexible workforce strategies aligned with organizational goals, with continuous evaluation and intervention mechanisms to build the right human capital."
+        video={{ src: "/handshake.mp4", caption: "Partner with us for smarter hiring solutions." }}
+      />
 
-          <VideoCard src="/handshake.mp4" caption="Partner with us for smarter hiring solutions." />
-        </div>
-      </section>
+      <StatsBand eyebrow="Why Choose WeSearch" credentials={credentials} />
 
-      <section className="border-t border-line bg-muted">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <SectionIntro eyebrow="Our Values" title="What We Stand For" />
-          <div className="mt-10 flex flex-wrap gap-3">
-            {values.map((value) => (
-              <span
-                key={value}
-                className="inline-flex items-center rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink"
-              >
-                {value}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <JourneySection
+        eyebrow="Our Journey"
+        title="Milestones Along the Way"
+        milestones={timeline}
+        image={{
+          src: unsplash("1616587656977-ac36a5a430bc", 1000),
+          alt: "Two colleagues leaning over a shared table, working through a plan together",
+          position: "object-[45%_center]",
+        }}
+      />
 
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <SectionIntro eyebrow="Our Journey" title="Milestones Along the Way" />
-        <div className="mt-10 space-y-6">
-          {timeline.map((entry) => (
-            <div key={entry.year} className="flex gap-6 border-l-2 border-line pl-6">
-              <span className="w-16 shrink-0 font-semibold text-accent">{entry.year}</span>
-              <p className="text-subtle">{entry.milestone}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ValuesShowcase
+        eyebrow="Our Values"
+        title="What We Stand For"
+        values={values.map((value) => ({
+          name: value.name,
+          icon: <value.Icon className="size-5" />,
+          image: unsplash(value.photo, 700),
+          position: value.position,
+        }))}
+      />
 
-      <section className="border-t border-line bg-muted">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <SectionIntro
-            eyebrow="How We Deliver"
-            title="A Structured Approach to Workforce Delivery"
-            subtitle="Our delivery model brings together dedicated teams, defined processes, technology-enabled reporting and regular governance to create consistency across client requirements."
-          />
-          <div className="mt-10">
-            <CardGrid
-              items={deliverySteps}
-              keyExtractor={(step) => step.title}
-              columns={3}
-              renderItem={(step) => (
-                <div className="rounded-2xl border border-line bg-surface p-6">
-                  <h3 className="text-card text-ink">{step.title}</h3>
-                  <p className="mt-2 text-sm text-subtle">{step.description}</p>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-      </section>
+      <DeliverySection
+        eyebrow="How We Deliver"
+        title="A Structured Approach to Workforce Delivery"
+        subtitle="Our delivery model brings together dedicated teams, defined processes, technology-enabled reporting and regular governance to create consistency across client requirements."
+        steps={deliverySteps}
+      />
 
       <CTASection
         eyebrow="Work With Us"

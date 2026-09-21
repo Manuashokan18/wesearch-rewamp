@@ -15,13 +15,14 @@ type PhotoHeroProps = {
   /** Trailing words of the title to set in the accent colour. */
   highlight?: string;
   subtitle: string;
-  primaryCta: PhotoHeroCta;
+  /** The buttons, the labels under them and the glass bar are each optional; a hero without them is just the copy. */
+  primaryCta?: PhotoHeroCta;
   /** An in-page `#anchor` gets a down arrow, since it scrolls rather than navigates. */
-  secondaryCta: PhotoHeroCta;
+  secondaryCta?: PhotoHeroCta;
   /** Short benefit labels under the buttons. */
-  features: PhotoHeroItem[];
+  features?: PhotoHeroItem[];
   /** Outcome labels in the glass bar at the foot of the copy. */
-  badgeItems: PhotoHeroItem[];
+  badgeItems?: PhotoHeroItem[];
   annotation?: string;
   image: { src: string; alt: string };
   /** Client logos in a band beneath the photograph, as on the home hero. */
@@ -122,44 +123,52 @@ export function PhotoHero({
             {subtitle}
           </p>
 
-          <div
-            className="hero-rise mt-10 flex flex-wrap items-center justify-center gap-4"
-            style={rise(3)}
-          >
-            <Button href={primaryCta.href}>{primaryCta.label}</Button>
-            <Button href={secondaryCta.href} variant="solidLight">
-              {secondaryCta.label}
-              {secondaryCta.href.startsWith("#") && (
-                <ArrowDown className="size-4" aria-hidden="true" />
+          {(primaryCta || secondaryCta) && (
+            <div
+              className="hero-rise mt-10 flex flex-wrap items-center justify-center gap-4"
+              style={rise(3)}
+            >
+              {primaryCta && <Button href={primaryCta.href}>{primaryCta.label}</Button>}
+              {secondaryCta && (
+                <Button href={secondaryCta.href} variant="solidLight">
+                  {secondaryCta.label}
+                  {secondaryCta.href.startsWith("#") && (
+                    <ArrowDown className="size-4" aria-hidden="true" />
+                  )}
+                </Button>
               )}
-            </Button>
-          </div>
+            </div>
+          )}
 
-          <ul
-            className="hero-rise mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3"
-            style={rise(4)}
-          >
-            {features.map((feature) => (
-              <li key={feature.label} className="flex items-center gap-2 text-sm text-white/75">
-                <feature.icon className="size-4 shrink-0 text-accent-soft" aria-hidden="true" />
-                {feature.label}
-              </li>
-            ))}
-          </ul>
+          {features && features.length > 0 && (
+            <ul
+              className="hero-rise mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3"
+              style={rise(4)}
+            >
+              {features.map((feature) => (
+                <li key={feature.label} className="flex items-center gap-2 text-sm text-white/75">
+                  <feature.icon className="size-4 shrink-0 text-accent-soft" aria-hidden="true" />
+                  {feature.label}
+                </li>
+              ))}
+            </ul>
+          )}
 
-          <ul
-            className="hero-rise mx-auto mt-10 flex w-fit max-w-full flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-3xl border border-white/15 bg-white/10 px-6 py-4 backdrop-blur-md sm:rounded-full"
-            style={rise(5)}
-          >
-            {badgeItems.map((item) => (
-              <li key={item.label} className="flex items-center gap-2.5 text-sm font-medium">
-                <span className="flex size-8 items-center justify-center rounded-full bg-white/15">
-                  <item.icon className="size-4 text-accent-soft" aria-hidden="true" />
-                </span>
-                {item.label}
-              </li>
-            ))}
-          </ul>
+          {badgeItems && badgeItems.length > 0 && (
+            <ul
+              className="hero-rise mx-auto mt-10 flex w-fit max-w-full flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-3xl border border-white/15 bg-white/10 px-6 py-4 backdrop-blur-md sm:rounded-full"
+              style={rise(5)}
+            >
+              {badgeItems.map((item) => (
+                <li key={item.label} className="flex items-center gap-2.5 text-sm font-medium">
+                  <span className="flex size-8 items-center justify-center rounded-full bg-white/15">
+                    <item.icon className="size-4 text-accent-soft" aria-hidden="true" />
+                  </span>
+                  {item.label}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {annotation && (
