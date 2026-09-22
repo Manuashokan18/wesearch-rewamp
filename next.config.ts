@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "6mb",
     },
   },
+  redirects() {
+    return [
+      // The combined Careers page split into /careers/join-us and
+      // /careers/open-positions — send old links to the roles listing.
+      { source: "/careers", destination: "/careers/open-positions", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

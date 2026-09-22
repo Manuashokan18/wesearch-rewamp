@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Eyebrow } from "@/components/sections/SectionIntro";
 import { IndustryOrbit } from "@/components/sections/IndustryOrbit";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 
 /**
  * "Industries We Support", exactly as it stood on the home page.
@@ -90,7 +91,7 @@ export function IndustriesSection() {
   return (
     <section className="overflow-hidden bg-surface">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 py-16 md:py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-10">
-        <div>
+        <AnimatedContainer direction="left">
           <Eyebrow>Industries We Support</Eyebrow>
           <h2 className="text-section-lg text-ink">
             Talent Solutions Across Growing Industries
@@ -119,13 +120,11 @@ export function IndustriesSection() {
               </li>
             ))}
           </ol>
+        </AnimatedContainer>
 
-          <p className="mt-8 text-xs text-subtle">
-            Representative engagements &middot; not a live vacancy feed
-          </p>
-        </div>
-
-        <IndustryOrbit stages={deliveryStages} mandates={boardMandates} />
+        <AnimatedContainer delay={0.2} direction="right">
+          <IndustryOrbit stages={deliveryStages} mandates={boardMandates} />
+        </AnimatedContainer>
       </div>
     </section>
   );

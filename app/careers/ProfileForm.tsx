@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
-import { CheckCircle2, Loader2 } from "lucide-react";
-import { Field, fieldControlProps } from "@/components/ui/Field";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { ArrowRight, CheckCircle2, Link as LinkIcon, Loader2, UploadCloud } from "lucide-react";
+import { controlClasses, Field, fieldControlProps } from "@/components/ui/Field";
 import { acceptedResumeExtensions } from "@/lib/config/site";
 import { submitProfile, type ProfileFormState } from "./actions";
 
@@ -23,6 +23,7 @@ export function ProfileForm({ position, onSubmitted }: ProfileFormProps) {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const errors = state.errors ?? {};
+  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
 
   useEffect(() => {
     if (state.status === "success") {
@@ -47,7 +48,7 @@ export function ProfileForm({ position, onSubmitted }: ProfileFormProps) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-5">
+    <form ref={formRef} action={formAction} className="space-y-6">
       {position && (
         <>
           <input type="hidden" name="positionId" value={position.id} />
@@ -117,26 +118,51 @@ export function ProfileForm({ position, onSubmitted }: ProfileFormProps) {
         label="Resume"
         required
         error={errors.resumeFile}
-        hint="Upload a PDF or Word document, up to 5MB. Adding a link above is optional."
+        hint="PDF or Word document, up to 5MB. Adding a link above is optional."
       >
-        <input
-          {...fieldControlProps("resumeLink", undefined)}
-          type="url"
-          aria-label="Resume or LinkedIn link (optional)"
-          placeholder="Link to your resume or LinkedIn profile (optional)"
-        />
-        <input
-          id="resumeFile"
-          name="resumeFile"
-          type="file"
-          required
-          accept={acceptedResumeExtensions.join(",")}
-          aria-invalid={errors.resumeFile ? true : undefined}
-          aria-describedby={errors.resumeFile ? "resumeFile-error" : undefined}
-          className={`mt-3 w-full cursor-pointer rounded-xl border px-4 py-3 text-sm text-subtle outline-none transition-colors focus:border-accent file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-tint file:px-4 file:py-2 file:text-sm file:font-medium file:text-accent hover:file:bg-accent/10 ${
-            errors.resumeFile ? "border-red-400" : "border-line"
+        <div className="relative">
+          <LinkIcon
+            aria-hidden="true"
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-subtle"
+          />
+          <input
+            {...fieldControlProps("resumeLink", undefined)}
+            type="url"
+            aria-label="Resume or LinkedIn link (optional)"
+            placeholder="Link to your resume or LinkedIn profile (optional)"
+            className={`${controlClasses} pl-11`}
+          />
+        </div>
+
+        <label
+          htmlFor="resumeFile"
+          className={`mt-3 flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-3 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent has-[:focus-visible]:ring-offset-2 ${
+            errors.resumeFile ? "border-red-400" : "border-line hover:border-accent/50 hover:bg-tint/40"
           }`}
-        />
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tint text-accent">
+            <UploadCloud className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-medium text-ink">
+              {resumeFileName ?? "Click to upload your resume"}
+            </span>
+            <span className="block text-xs text-subtle">
+              {resumeFileName ? "Selected — click to replace" : "PDF or Word, up to 5MB"}
+            </span>
+          </span>
+          <input
+            id="resumeFile"
+            name="resumeFile"
+            type="file"
+            required
+            accept={acceptedResumeExtensions.join(",")}
+            aria-invalid={errors.resumeFile ? true : undefined}
+            aria-describedby={errors.resumeFile ? "resumeFile-error" : undefined}
+            onChange={(event) => setResumeFileName(event.target.files?.[0]?.name ?? null)}
+            className="sr-only"
+          />
+        </label>
       </Field>
 
       <Field htmlFor="message" label="Message">
@@ -161,10 +187,11 @@ export function ProfileForm({ position, onSubmitted }: ProfileFormProps) {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
-        {pending && <Loader2 className="h-4 w-4 animate-spin" />}
+        {pending && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
         {pending ? "Submitting…" : position ? "Submit Application" : "Submit Profile"}
+        {!pending && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
       </button>
     </form>
   );

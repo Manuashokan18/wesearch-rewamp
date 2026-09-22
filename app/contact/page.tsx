@@ -154,9 +154,11 @@ export default function ContactPage() {
         </section>
 
         <div className="relative pb-44 pt-5">
-          <h2 id="offices-heading" className="px-6 text-center text-section">
-            Our Offices
-          </h2>
+          <AnimatedContainer>
+            <h2 id="offices-heading" className="px-6 text-center text-section">
+              Our Offices
+            </h2>
+          </AnimatedContainer>
         </div>
       </div>
 

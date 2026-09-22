@@ -1,4 +1,5 @@
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { BentoGrid } from "@/components/ui/bento-grid";
 import { Button } from "@/components/ui/Button";
 import { FeatureTabs } from "@/components/ui/feature-tabs";
@@ -57,22 +58,25 @@ function StackSolutions({ page }: PageProps) {
       </svg>
 
       <div className="relative mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start lg:gap-16 lg:py-24">
+        {/* The AnimatedContainer wraps the content, not this div — it stays plain so its own `lg:sticky` pin isn't disturbed by a transformed ancestor. */}
         <div className="lg:sticky lg:top-28">
-          <Eyebrow>{solutions.eyebrow}</Eyebrow>
-          <h2 className="text-hero text-ink">
-            <Highlighted text={solutions.title} highlight={solutions.highlight} />
-          </h2>
-          <p className="mt-6 max-w-[40ch] text-lg leading-relaxed text-subtle">
-            {solutions.subtitle}
-          </p>
-          <div className="mt-9">
-            <Button href="/contact">{hero.primaryCtaLabel}</Button>
-          </div>
+          <AnimatedContainer direction="left">
+            <Eyebrow>{solutions.eyebrow}</Eyebrow>
+            <h2 className="text-hero text-ink">
+              <Highlighted text={solutions.title} highlight={solutions.highlight} />
+            </h2>
+            <p className="mt-6 max-w-[40ch] text-lg leading-relaxed text-subtle">
+              {solutions.subtitle}
+            </p>
+            <div className="mt-9">
+              <Button href="/contact">{hero.primaryCtaLabel}</Button>
+            </div>
 
-          <p className="mt-16 hidden items-center gap-4 text-sm tracking-wide text-subtle lg:flex">
-            <span className="h-px w-10 bg-accent" aria-hidden="true" />
-            Right Talent. Real Impact.
-          </p>
+            <p className="mt-16 hidden items-center gap-4 text-sm tracking-wide text-subtle lg:flex">
+              <span className="h-px w-10 bg-accent" aria-hidden="true" />
+              Right Talent. Real Impact.
+            </p>
+          </AnimatedContainer>
         </div>
 
         <div className="relative">
@@ -104,18 +108,18 @@ function AccordionSolutions({ page }: PageProps) {
     <SolutionsGround>
       <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-end lg:gap-16">
-          <div>
+          <AnimatedContainer direction="left">
             <Eyebrow>{solutions.eyebrow}</Eyebrow>
             <h2 className="text-section-lg text-ink">
               <Highlighted text={solutions.title} highlight={solutions.highlight} />
             </h2>
-          </div>
-          <div>
+          </AnimatedContainer>
+          <AnimatedContainer delay={0.2} direction="right">
             <p className="max-w-[46ch] leading-relaxed text-subtle">{solutions.subtitle}</p>
             <div className="mt-7">
               <Button href="/contact">{hero.primaryCtaLabel}</Button>
             </div>
-          </div>
+          </AnimatedContainer>
         </div>
 
         <ImageAccordion items={items} className="mt-12" />

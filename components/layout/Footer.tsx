@@ -6,7 +6,6 @@ import { primaryNav } from "@/lib/nav";
 import { services } from "@/lib/data/services";
 import { publicEmail } from "@/lib/config/site";
 import { AnimatedContainer } from "@/components/ui/animated-container";
-import { HomeVersionLink } from "@/components/layout/HomeVersionLink";
 import { LinkedInIcon } from "@/components/ui/SocialIcons";
 
 type FooterLink = {
@@ -91,14 +90,14 @@ export function Footer() {
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid max-w-6xl gap-8 px-6 py-14 lg:py-20 xl:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:gap-8 lg:py-20 xl:grid-cols-3">
         <AnimatedContainer className="space-y-4">
           <Link href="/" className="inline-flex items-center gap-2">
             <Image src="/icon-mark.png" alt="" width={800} height={800} className="size-8" />
             <span className="text-lg font-semibold">WeSearch</span>
           </Link>
           <p className="text-sm text-white/60">Right Talent. Real Impact.</p>
-          <p className="mt-8 text-sm text-white/50 xl:mt-10">
+          <p className="mt-6 text-sm text-white/50 xl:mt-10">
             &copy; {new Date().getFullYear()} WeSearch. All rights reserved.
           </p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/50">
@@ -109,28 +108,22 @@ export function Footer() {
                 </Link>
               </li>
             ))}
-            {/* TEMPORARY: moves between the two home page versions (see lib/nav.ts). */}
-            <li>
-              <HomeVersionLink className="text-accent-soft transition-colors duration-300 hover:text-white" />
-            </li>
           </ul>
         </AnimatedContainer>
 
-        <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
+        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4 md:gap-y-8 xl:col-span-2 xl:mt-0">
           {columns.map((column, index) => (
             <AnimatedContainer key={column.label} delay={0.1 + index * 0.1}>
-              <div className="mb-10 md:mb-0">
-                <h3 className="text-xs font-medium uppercase tracking-wider text-white">
-                  {column.label}
-                </h3>
-                <ul className="mt-4 space-y-2.5 text-sm text-white/60">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <FooterItem link={link} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <h3 className="text-xs font-medium uppercase tracking-wider text-white">
+                {column.label}
+              </h3>
+              <ul className="mt-4 space-y-2.5 text-sm text-white/60">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <FooterItem link={link} />
+                  </li>
+                ))}
+              </ul>
             </AnimatedContainer>
           ))}
         </div>

@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { InteractiveTravelCard } from "@/components/ui/3d-card";
 import { GlowCards } from "@/components/ui/glow-cards";
 import { ImageAccordion } from "@/components/ui/image-accordion";
@@ -32,7 +33,7 @@ export function WhySection({ page }: { page: ServiceDetailPage }) {
 
       <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
-          <div>
+          <AnimatedContainer direction="left">
             <Eyebrow>{whyWeSearch.eyebrow}</Eyebrow>
             <h2 className="text-section-lg">
               <Highlighted
@@ -42,18 +43,20 @@ export function WhySection({ page }: { page: ServiceDetailPage }) {
               />
             </h2>
             <p className="mt-4 max-w-lg text-white/70">{whyWeSearch.subtitle}</p>
-          </div>
+          </AnimatedContainer>
 
-          <dl className="grid grid-cols-3 gap-6 sm:gap-10">
-            {companyStats.map((stat) => (
-              <div key={stat.label} className="flex flex-col">
-                <dt className="mt-1 text-sm text-white/60">{stat.label}</dt>
-                <dd className="order-first text-2xl font-bold text-accent-soft sm:text-4xl">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <AnimatedContainer delay={0.2} direction="right">
+            <dl className="grid grid-cols-3 gap-6 sm:gap-10">
+              {companyStats.map((stat) => (
+                <div key={stat.label} className="flex flex-col">
+                  <dt className="mt-1 text-sm text-white/60">{stat.label}</dt>
+                  <dd className="order-first text-2xl font-bold text-accent-soft sm:text-4xl">
+                    {stat.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </AnimatedContainer>
         </div>
 
         <div className="mt-14">
@@ -76,6 +79,7 @@ function WhyReasons({ page }: { page: ServiceDetailPage }) {
           items={whyWeSearch.items}
           keyExtractor={(item) => item.title}
           columns={4}
+          animated
           renderItem={(item) => (
             <div className="perspective-[1000px]">
               <InteractiveTravelCard

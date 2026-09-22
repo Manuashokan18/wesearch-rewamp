@@ -3,6 +3,7 @@ import { Send, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Annotation } from "@/components/ui/Annotation";
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 
 type Cta = { label: string; href: string };
 type CTAImage = { src: string; alt: string; width: number; height: number };
@@ -34,7 +35,7 @@ export function CTASection({
 }: CTASectionProps) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">
-      <div
+      <AnimatedContainer
         className={`rounded-3xl bg-tint p-10 sm:p-14 ${
           showDecoration ? "grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]" : ""
         }`}
@@ -90,7 +91,7 @@ export function CTASection({
             )}
           </div>
         )}
-      </div>
+      </AnimatedContainer>
     </section>
   );
 }

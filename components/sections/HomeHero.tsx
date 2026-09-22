@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { HeroBackdrop } from "@/components/sections/HeroBackdrop";
-import { HyperGrid } from "@/components/ui/HyperGrid";
 import { LogoMarquee } from "@/components/sections/LogoMarquee";
 
 type HomeHeroFeature = { icon: LucideIcon; label: string };
@@ -27,12 +26,8 @@ type HomeHeroProps = {
   secondaryCtas: HomeHeroCta[];
   features: HomeHeroFeature[];
   logos: HomeHeroLogo[];
-  /**
-   * The photographs that take turns behind the headline. Leave it out for the
-   * earlier drifting-grid background (`HyperGrid`), which the previous home
-   * page (`app/home-previous`) still uses.
-   */
-  backdrop?: string[];
+  /** The photographs that take turns behind the headline. */
+  backdrop: string[];
 };
 
 /**
@@ -44,8 +39,7 @@ type HomeHeroProps = {
  * other — with a band of client logos closing the section.
  *
  * `HeroBackdrop` supplies the moving photographic background. It is CSS only,
- * so the whole hero is server-rendered. Without `backdrop` the hero sits on
- * `HyperGrid` instead, as it did before the photographs.
+ * so the whole hero is server-rendered.
  */
 export function HomeHero({
   badge,
@@ -146,16 +140,10 @@ export function HomeHero({
   // Pulled up under the sticky header so the imagery runs behind it.
   return (
     <section className="-mt-20 text-white">
-      {backdrop ? (
-        <div className="relative isolate flex min-h-[calc(78vh+5rem)] items-center overflow-hidden pt-20">
-          <HeroBackdrop slides={backdrop} />
-          {copy}
-        </div>
-      ) : (
-        <HyperGrid gridSize={40} className="flex min-h-[calc(78vh+5rem)] items-center pt-20">
-          {copy}
-        </HyperGrid>
-      )}
+      <div className="relative isolate flex min-h-[calc(78vh+5rem)] items-center overflow-hidden pt-20">
+        <HeroBackdrop slides={backdrop} />
+        {copy}
+      </div>
 
       {/*
        * The logo band sits below a rule on a flat ground, clear of the moving

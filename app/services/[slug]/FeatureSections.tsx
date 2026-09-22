@@ -1,6 +1,7 @@
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { EcosystemDiagram } from "@/components/sections/EcosystemDiagram";
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { Button } from "@/components/ui/Button";
 import { FeatureList } from "@/components/ui/feature-list";
 import { FeatureTabs } from "@/components/ui/feature-tabs";
@@ -86,7 +87,7 @@ export function EcosystemSection({ page }: PageProps) {
   return (
     <section id="ecosystem" className="relative scroll-mt-20 overflow-hidden bg-surface">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:py-24">
-        <div>
+        <AnimatedContainer direction="left">
           <Eyebrow>{ecosystem.eyebrow}</Eyebrow>
           <h2 className="text-section-lg text-ink">
             <Highlighted text={ecosystem.title} highlight={ecosystem.highlight} />
@@ -95,9 +96,11 @@ export function EcosystemSection({ page }: PageProps) {
           <div className="mt-8">
             <Button href="/contact">{ecosystem.ctaLabel}</Button>
           </div>
-        </div>
+        </AnimatedContainer>
 
-        <EcosystemDiagram layers={ecosystem.layers} pillars={ecosystem.pillars} />
+        <AnimatedContainer delay={0.2} direction="right">
+          <EcosystemDiagram layers={ecosystem.layers} pillars={ecosystem.pillars} />
+        </AnimatedContainer>
       </div>
     </section>
   );

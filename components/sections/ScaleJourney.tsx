@@ -3,6 +3,8 @@ import Image from "next/image";
 import { ArrowDown, ArrowRight, type LucideIcon } from "lucide-react";
 import { Annotation } from "@/components/ui/Annotation";
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
+import { CountUp } from "@/components/ui/count-up";
 
 type ScaleStep = { icon: LucideIcon; value: string; label: string };
 
@@ -103,84 +105,93 @@ export function ScaleJourney({
         <path d="M300 210C140 280 40 540 20 800" stroke="currentColor" strokeWidth="1.5" />
       </svg>
 
-      {/* Wide screens: the photograph clusters. */}
-      <div
+      {/* Wide screens: the photograph clusters. Each rises in as it scrolls into view; the positioning lives on AnimatedContainer itself so its motion transform stays the containing block for the absolute pieces inside. */}
+      <AnimatedContainer
+        direction="left"
         className="pointer-events-none absolute top-1/2 hidden size-64 -translate-y-1/2 xl:block left-[max(1rem,calc(50%-43rem))] 2xl:left-[calc(50%-48rem)] 2xl:size-80"
-        aria-hidden="true"
       >
-        <div className="absolute -left-16 -top-20 size-[28rem] rounded-full bg-tint/70" />
-        <div className={`${dots} -left-24 -top-10 h-24 w-32`} />
-        <Photo src={left.image} className="inset-0" />
-        <CaptionCard feature={left} className="-bottom-6 -left-4 w-64" />
-        <div className={`${dots} -bottom-28 left-36 h-20 w-32`} />
-      </div>
+        <div aria-hidden="true">
+          <div className="absolute -left-16 -top-20 size-[28rem] rounded-full bg-tint/70" />
+          <div className={`${dots} -left-24 -top-10 h-24 w-32`} />
+          <Photo src={left.image} className="inset-0" />
+          <CaptionCard feature={left} className="-bottom-6 -left-4 w-64" />
+          <div className={`${dots} -bottom-28 left-36 h-20 w-32`} />
+        </div>
+      </AnimatedContainer>
 
-      <div
+      <AnimatedContainer
+        delay={0.2}
+        direction="right"
         className="pointer-events-none absolute top-1/2 hidden size-64 -translate-y-[40%] xl:block right-[max(-4rem,calc(50%-48rem))] 2xl:right-[calc(50%-50rem)] 2xl:size-80"
-        aria-hidden="true"
       >
-        <div className="absolute -bottom-24 -right-24 size-[30rem] rounded-full bg-tint/60" />
-        <div className={`${dots} -left-40 top-10 h-20 w-36`} />
-        {annotation && (
-          <Annotation
-            text={annotation}
-            tone="accent"
-            className="absolute -left-4 -top-52 -rotate-12 2xl:-top-56"
-          />
-        )}
-        <Photo src={right.image} className="inset-0" />
-        <CaptionCard feature={right} className="-left-16 bottom-8 w-60" />
-      </div>
+        <div aria-hidden="true">
+          <div className="absolute -bottom-24 -right-24 size-[30rem] rounded-full bg-tint/60" />
+          <div className={`${dots} -left-40 top-10 h-20 w-36`} />
+          {annotation && (
+            <Annotation
+              text={annotation}
+              tone="accent"
+              className="absolute -left-4 -top-52 -rotate-12 2xl:-top-56"
+            />
+          )}
+          <Photo src={right.image} className="inset-0" />
+          <CaptionCard feature={right} className="-left-16 bottom-8 w-60" />
+        </div>
+      </AnimatedContainer>
 
       <div className="relative mx-auto max-w-3xl px-6 py-20 text-center lg:py-24">
-        <Eyebrow center bracketed>
-          {eyebrow}
-        </Eyebrow>
-        <h2 className="text-hero text-ink">
-          {title} <span className="block text-accent">{highlight}</span>
-        </h2>
-        <p className="mx-auto mt-6 max-w-[56ch] leading-relaxed text-subtle sm:text-lg">
-          {description}
-        </p>
+        <AnimatedContainer>
+          <Eyebrow center bracketed>
+            {eyebrow}
+          </Eyebrow>
+          <h2 className="text-hero text-ink">
+            {title} <span className="block text-accent">{highlight}</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-[56ch] leading-relaxed text-subtle sm:text-lg">
+            {description}
+          </p>
+        </AnimatedContainer>
 
-        <ol className="mt-14 flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center sm:gap-0">
-          {steps.map((step, index) => (
-            <Fragment key={step.value}>
-              <li className="flex w-full max-w-60 flex-col items-center sm:w-32 lg:w-40">
-                <span className="flex size-20 items-center justify-center rounded-full bg-gradient-to-b from-tint to-tint/30 text-accent ring-1 ring-accent/10 lg:size-24">
-                  <step.icon className="size-8 stroke-[1.75] lg:size-9" aria-hidden="true" />
-                </span>
-                <p className="mt-5 text-4xl font-bold tracking-tight text-ink lg:text-[2.75rem]">
-                  {step.value}
-                </p>
-                <p className="mt-2 text-sm leading-snug text-ink/80 lg:text-base">{step.label}</p>
-              </li>
-
-              {index < steps.length - 1 && (
-                <li aria-hidden="true" className="flex shrink-0 items-center justify-center">
-                  <ArrowDown className="size-5 text-accent sm:hidden" />
-                  {/*
-                   * The wave dips from one icon to the next; the arrow badge
-                   * sits in the trough, just below the icons' centre line.
-                   */}
-                  <span className="relative hidden h-20 w-20 items-center justify-center sm:flex lg:h-24 lg:w-28">
-                    <svg
-                      viewBox="0 0 112 40"
-                      fill="none"
-                      preserveAspectRatio="none"
-                      className="absolute inset-x-0 top-1/2 h-10 w-full -translate-y-1/2 text-accent/35"
-                    >
-                      <path d="M0 12C28 12 36 28 56 28S84 12 112 12" stroke="currentColor" strokeWidth="2" />
-                    </svg>
-                    <span className="relative flex size-9 translate-y-2 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/30 lg:size-10">
-                      <ArrowRight className="size-4 lg:size-5" />
-                    </span>
+        <AnimatedContainer delay={0.2}>
+          <ol className="mt-14 flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center sm:gap-0">
+            {steps.map((step, index) => (
+              <Fragment key={step.value}>
+                <li className="flex w-full max-w-60 flex-col items-center sm:w-32 lg:w-40">
+                  <span className="flex size-20 items-center justify-center rounded-full bg-gradient-to-b from-tint to-tint/30 text-accent ring-1 ring-accent/10 lg:size-24">
+                    <step.icon className="size-8 stroke-[1.75] lg:size-9" aria-hidden="true" />
                   </span>
+                  <p className="mt-5 text-4xl font-bold tracking-tight text-ink lg:text-[2.75rem]">
+                    <CountUp value={step.value} />
+                  </p>
+                  <p className="mt-2 text-sm leading-snug text-ink/80 lg:text-base">{step.label}</p>
                 </li>
-              )}
-            </Fragment>
-          ))}
-        </ol>
+
+                {index < steps.length - 1 && (
+                  <li aria-hidden="true" className="flex shrink-0 items-center justify-center">
+                    <ArrowDown className="size-5 text-accent sm:hidden" />
+                    {/*
+                     * The wave dips from one icon to the next; the arrow badge
+                     * sits in the trough, just below the icons' centre line.
+                     */}
+                    <span className="relative hidden h-20 w-20 items-center justify-center sm:flex lg:h-24 lg:w-28">
+                      <svg
+                        viewBox="0 0 112 40"
+                        fill="none"
+                        preserveAspectRatio="none"
+                        className="absolute inset-x-0 top-1/2 h-10 w-full -translate-y-1/2 text-accent/35"
+                      >
+                        <path d="M0 12C28 12 36 28 56 28S84 12 112 12" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <span className="relative flex size-9 translate-y-2 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/30 lg:size-10">
+                        <ArrowRight className="size-4 lg:size-5" />
+                      </span>
+                    </span>
+                  </li>
+                )}
+              </Fragment>
+            ))}
+          </ol>
+        </AnimatedContainer>
 
         {note && <p className="mt-10 text-sm text-subtle sm:text-base">{note}</p>}
 

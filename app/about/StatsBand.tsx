@@ -1,3 +1,4 @@
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { CountUp } from "@/components/ui/count-up";
 import type { Credential } from "@/lib/data/company";
 
@@ -37,17 +38,20 @@ export function StatsBand({
       />
 
       <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-28">
-        <h2 className="flex items-center justify-center gap-3 text-eyebrow text-accent-soft">
-          <span className="h-px w-8 bg-accent-soft" aria-hidden="true" />
-          {eyebrow}
-          <span className="h-px w-8 bg-accent-soft" aria-hidden="true" />
-        </h2>
+        <AnimatedContainer>
+          <h2 className="flex items-center justify-center gap-3 text-eyebrow text-accent-soft">
+            <span className="h-px w-8 bg-accent-soft" aria-hidden="true" />
+            {eyebrow}
+            <span className="h-px w-8 bg-accent-soft" aria-hidden="true" />
+          </h2>
+        </AnimatedContainer>
 
         <dl className="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-10 lg:mt-16 lg:grid-cols-3 lg:gap-y-16">
           {credentials.map((credential, index) => (
             // Two credentials share a label, so the index keeps the keys unique.
-            <div
+            <AnimatedContainer
               key={`${credential.label}-${index}`}
+              delay={Math.min(index * 0.08, 0.4)}
               // Column-reverse packs from the bottom; `justify-end` pins the figure to the top so a label that wraps can't push it out of line.
               className="group relative flex flex-col-reverse justify-end gap-4 border-t border-white/15 pt-6 sm:gap-5 sm:pt-8"
             >
@@ -69,7 +73,7 @@ export function StatsBand({
               <dd className="bg-gradient-to-b from-white to-accent-soft bg-clip-text text-4xl font-bold leading-none tracking-tight text-transparent sm:text-6xl lg:text-7xl">
                 <CountUp value={credential.value} />
               </dd>
-            </div>
+            </AnimatedContainer>
           ))}
         </dl>
       </div>

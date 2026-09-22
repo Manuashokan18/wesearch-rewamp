@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { primaryNav } from "@/lib/nav";
 import { Button } from "@/components/ui/Button";
 
@@ -48,9 +49,15 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     setOpenSection(openSection === item.href ? null : item.href)
                   }
                   aria-label={`Toggle ${item.label} submenu`}
+                  aria-expanded={openSection === item.href}
                   className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30"
                 >
-                  {openSection === item.href ? "−" : "+"}
+                  <ChevronDown
+                    className={`size-4 transition-transform duration-300 motion-reduce:transition-none ${
+                      openSection === item.href ? "rotate-180" : ""
+                    }`}
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
               {openSection === item.href && (

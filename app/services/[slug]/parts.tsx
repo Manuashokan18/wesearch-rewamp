@@ -1,4 +1,5 @@
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 
 export const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -39,7 +40,7 @@ export function SectionHeading({
   subtitle: string;
 }) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
+    <AnimatedContainer className="mx-auto max-w-2xl text-center">
       <Eyebrow center bracketed>
         {eyebrow}
       </Eyebrow>
@@ -47,6 +48,6 @@ export function SectionHeading({
         <Highlighted text={title} highlight={highlight} />
       </h2>
       <p className="mx-auto mt-4 text-subtle">{subtitle}</p>
-    </div>
+    </AnimatedContainer>
   );
 }

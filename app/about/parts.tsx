@@ -1,4 +1,5 @@
 import { Eyebrow } from "@/components/sections/SectionIntro";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { cn } from "@/lib/utils";
 
 export const pad = (n: number) => String(n).padStart(2, "0");
@@ -24,7 +25,7 @@ export function SectionHeading({
   inverse?: boolean;
 }) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
+    <AnimatedContainer className="mx-auto max-w-2xl text-center">
       {inverse ? (
         <p className="mb-4 flex items-center justify-center gap-3 text-eyebrow text-accent-soft">
           <span className="h-px w-8 bg-accent-soft" aria-hidden="true" />
@@ -40,6 +41,6 @@ export function SectionHeading({
       {subtitle && (
         <p className={cn("mx-auto mt-4", inverse ? "text-white/70" : "text-subtle")}>{subtitle}</p>
       )}
-    </div>
+    </AnimatedContainer>
   );
 }

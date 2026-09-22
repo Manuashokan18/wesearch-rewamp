@@ -1,5 +1,6 @@
 import { Plus, Sparkles } from "lucide-react";
 import { CTASection } from "@/components/sections/CTASection";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import type { Product, ProductDetailPage } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
@@ -21,13 +22,13 @@ const dots =
 /** A section's heading, centred under a short accent bar. The client's page has no label above its headings, so there is none here. */
 function SectionHeading({ title, inverse = false }: { title: string; inverse?: boolean }) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
+    <AnimatedContainer className="mx-auto max-w-2xl text-center">
       <span
         className={cn("mx-auto mb-5 block h-1 w-10 rounded-full", inverse ? "bg-accent-soft" : "bg-accent")}
         aria-hidden="true"
       />
       <h2 className={cn("text-section-lg", inverse ? "text-white" : "text-ink")}>{title}</h2>
-    </div>
+    </AnimatedContainer>
   );
 }
 
@@ -60,19 +61,21 @@ function KeyFeatures({
 
             return (
               <li key={feature.title}>
-                <SpotlightCard
-                  tone="light"
-                  className="flex h-full flex-col p-7 shadow-sm shadow-navy/5 hover:shadow-lg hover:shadow-navy/10"
-                >
-                  <span className="relative flex size-12 items-center justify-center rounded-xl bg-tint text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-white motion-reduce:transition-none">
-                    <Icon className="size-6" aria-hidden="true" />
-                  </span>
+                <AnimatedContainer delay={Math.min(index * 0.1, 0.4)}>
+                  <SpotlightCard
+                    tone="light"
+                    className="flex h-full flex-col p-7 shadow-sm shadow-navy/5 hover:shadow-lg hover:shadow-navy/10"
+                  >
+                    <span className="relative flex size-12 items-center justify-center rounded-xl bg-tint text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-white motion-reduce:transition-none">
+                      <Icon className="size-6" aria-hidden="true" />
+                    </span>
 
-                  <div className="relative mt-6">
-                    <h3 className="text-card text-ink">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-subtle">{feature.description}</p>
-                  </div>
-                </SpotlightCard>
+                    <div className="relative mt-6">
+                      <h3 className="text-card text-ink">{feature.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-subtle">{feature.description}</p>
+                    </div>
+                  </SpotlightCard>
+                </AnimatedContainer>
               </li>
             );
           })}
@@ -110,7 +113,10 @@ function Benefits({
       <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
         <SectionHeading inverse title="Benefits" />
 
-        <div className="mx-auto mt-14 max-w-3xl divide-y divide-white/15 border-y border-white/15">
+        <AnimatedContainer
+          delay={0.15}
+          className="mx-auto mt-14 max-w-3xl divide-y divide-white/15 border-y border-white/15"
+        >
           {benefits.map((benefit, index) => {
             const Icon = detailPage.benefitIcons[index] ?? Sparkles;
 
@@ -139,7 +145,7 @@ function Benefits({
               </details>
             );
           })}
-        </div>
+        </AnimatedContainer>
       </div>
     </section>
   );

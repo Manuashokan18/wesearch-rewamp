@@ -32,6 +32,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
       className={`${redHatDisplay.variable} h-full antialiased`}
     >
+      <head>
+        {/*
+         * `AnimatedContainer` server-renders its scroll-reveal sections at
+         * their pre-animation (invisible) state and relies on client-side JS
+         * to reveal them. Without scripting that reveal never runs, so this
+         * forces every `data-reveal` element to its final, visible state
+         * instead of leaving real content permanently hidden.
+         */}
+        <noscript>
+          <style>{"[data-reveal]{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+      </head>
       <body className="min-h-full flex flex-col bg-surface text-ink">
         <Header />
         <main className="flex-1">{children}</main>

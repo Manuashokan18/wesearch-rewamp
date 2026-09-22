@@ -43,7 +43,10 @@ export function ServiceShowcase({ page }: { page: ServiceDetailPage }) {
         title={finalCta.title}
         description={finalCta.description}
         primaryCta={{ label: finalCta.primaryLabel, href: "/contact" }}
-        secondaryCta={{ label: finalCta.secondaryLabel, href: finalCta.secondaryHref ?? "/services" }}
+        secondaryCta={{
+          label: finalCta.secondaryLabel,
+          href: finalCta.secondaryHref ?? "/services/contract-staffing",
+        }}
         image={finalCta.image ?? defaultCtaImage}
         highlights={finalCta.assurances}
         showDecoration

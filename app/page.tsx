@@ -26,6 +26,7 @@ import { CredentialTicker } from "@/components/sections/CredentialTicker";
 import { CTASection } from "@/components/sections/CTASection";
 import { Eyebrow } from "@/components/sections/SectionIntro";
 import { Button } from "@/components/ui/Button";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { clientLogos, credentials } from "@/lib/data/company";
 
 const heroFeatures = [
@@ -49,7 +50,7 @@ const heroBackdrop = [
 
 const heroBadge = {
   label: "50,000+ placements across six industries",
-  href: "/services",
+  href: "/services/contract-staffing",
   icon: TrendingUp,
 };
 
@@ -65,8 +66,8 @@ const heroPrimaryCta = {
 
 /** Explore Our Services is the content doc's secondary button; View Open Roles keeps the candidate door. */
 const heroSecondaryCtas = [
-  { label: "Explore Our Services", href: "/services" },
-  { label: "View Open Roles", href: "/careers" },
+  { label: "Explore Our Services", href: "/services/contract-staffing" },
+  { label: "View Open Roles", href: "/careers/open-positions" },
 ];
 
 /** Unsplash stock photography, sized at source so the optimiser starts small. */
@@ -204,15 +205,19 @@ export default function Home() {
         backdrop={heroBackdrop}
       />
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section className="mx-auto max-w-6xl overflow-hidden px-6 py-16">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
-          <div>
+          <AnimatedContainer direction="left">
             <Eyebrow>Introduction</Eyebrow>
             <h2 className="text-section-lg text-ink">
               Workforce Solutions Built Around Your Business
             </h2>
-          </div>
-          <div className="max-w-[58ch] space-y-4 text-lg leading-relaxed text-subtle">
+          </AnimatedContainer>
+          <AnimatedContainer
+            delay={0.2}
+            direction="right"
+            className="max-w-[58ch] space-y-4 text-lg leading-relaxed text-subtle"
+          >
             <p>
               Every organization has different workforce requirements — from
               building specialist teams to managing high-volume hiring and scaling
@@ -228,28 +233,31 @@ export default function Home() {
               delivery and long-term partnerships, with capabilities designed to
               evolve as our clients&apos; workforce needs grow.
             </p>
-          </div>
+          </AnimatedContainer>
         </div>
       </section>
 
       {/* A light blue ground, so this section reads as its own band between the white sections above and the navy one below. */}
       <section className="bg-tint">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <Eyebrow>Why WeSearch</Eyebrow>
-          <h2 className="max-w-xl text-section-lg text-ink">
-            Built Around Delivery. Driven by Outcomes.
-          </h2>
-          <p className="mt-4 max-w-2xl text-subtle">
-            We believe workforce solutions are more than simply finding
-            candidates. They require process discipline, responsiveness,
-            visibility and accountability across the entire hiring and
-            workforce lifecycle.
-          </p>
-          <p className="mt-10 text-eyebrow text-ink">Our delivery approach focuses on:</p>
+          <AnimatedContainer>
+            <Eyebrow>Why WeSearch</Eyebrow>
+            <h2 className="max-w-xl text-section-lg text-ink">
+              Built Around Delivery. Driven by Outcomes.
+            </h2>
+            <p className="mt-4 max-w-2xl text-subtle">
+              We believe workforce solutions are more than simply finding
+              candidates. They require process discipline, responsiveness,
+              visibility and accountability across the entire hiring and
+              workforce lifecycle.
+            </p>
+            <p className="mt-10 text-eyebrow text-ink">Our delivery approach focuses on:</p>
+          </AnimatedContainer>
           <div className="mt-6">
             <CardGrid
               items={pillars}
               keyExtractor={(pillar) => pillar.title}
+              animated
               renderItem={(pillar) => (
                 <div className="perspective-[1000px]">
                   <InteractiveTravelCard
@@ -282,7 +290,7 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-6xl px-6 pt-14 text-center lg:pt-16">
           {/* Wide enough for the headline to sit on one line from laptop width up. */}
-          <div className="mx-auto max-w-4xl">
+          <AnimatedContainer className="mx-auto max-w-4xl">
             <Eyebrow center bracketed>
               Why Choose WeSearch
             </Eyebrow>
@@ -299,7 +307,7 @@ export default function Home() {
                 Learn More →
               </Button>
             </div>
-          </div>
+          </AnimatedContainer>
         </div>
 
         {/* The credentials keep moving, edge to edge, so the figures are the section. */}
@@ -311,7 +319,7 @@ export default function Home() {
 
       <section className="border-t border-line bg-muted">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="mx-auto max-w-2xl text-center">
+          <AnimatedContainer className="mx-auto max-w-2xl text-center">
             <Eyebrow center bracketed>
               How We Deliver
             </Eyebrow>
@@ -329,9 +337,9 @@ export default function Home() {
               management, we focus on creating a transparent and accountable
               delivery experience.
             </p>
-          </div>
+          </AnimatedContainer>
 
-          <ImageCards items={processSteps} ordered className="mt-12 lg:grid-cols-4" />
+          <ImageCards items={processSteps} ordered animated className="mt-12 lg:grid-cols-4" />
 
           <div className="mt-12 text-center">
             <Button href="/about" variant="outline">
@@ -358,7 +366,7 @@ export default function Home() {
 
       <section className="border-t border-line bg-muted">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="mx-auto max-w-2xl text-center">
+          <AnimatedContainer className="mx-auto max-w-2xl text-center">
             <Eyebrow center bracketed>
               Our Commitment
             </Eyebrow>
@@ -370,9 +378,9 @@ export default function Home() {
               professionals by combining market understanding with disciplined
               execution.
             </p>
-          </div>
+          </AnimatedContainer>
 
-          <ImageCards items={commitments} className="mt-12" />
+          <ImageCards items={commitments} animated className="mt-12" />
         </div>
       </section>
 

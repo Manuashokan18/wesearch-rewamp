@@ -2,13 +2,6 @@ import { services } from "@/lib/data/services";
 import { products } from "@/lib/data/products";
 
 /**
- * TEMPORARY. The previous version of the home page, kept beside the current one
- * so the two can be compared. Once one is chosen, delete `app/home-previous`,
- * this constant, and its uses below and in `components/layout/Header.tsx`.
- */
-export const previousHomePath = "/home-previous";
-
-/**
  * Pages whose hero runs up behind the header: the home page, About, every
  * service page and every product page with a designed hero, which open on a
  * full-bleed image. The header starts transparent over them, so the bar shows
@@ -16,7 +9,6 @@ export const previousHomePath = "/home-previous";
  */
 export const overlayHeroPaths = [
   "/",
-  previousHomePath,
   "/about",
   ...services
     .filter((service) => service.detailPage)
@@ -41,27 +33,34 @@ export const primaryNav: NavItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Services",
-    href: "/services",
+    // No standalone services listing page — the label itself opens on the
+    // first service; the dropdown (and Footer's "Our Services" column) is
+    // how every other service is actually reached.
+    href: `/services/${services[0].slug}`,
     children: services.map((service) => ({
       label: service.title,
       href: `/services/${service.slug}`,
     })),
   },
-  {
-    label: "Products",
-    href: "/products",
-    children: products.map((product) => ({
-      label: product.title,
-      href: `/products/${product.slug}`,
-    })),
-  },
+  // No standalone products listing page, and PINT is the only product, so
+  // this is a plain link straight to it rather than a one-item dropdown.
+  { label: "Products", href: `/products/${products[0].slug}` },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
-  { label: "Careers", href: "/careers" },
+  {
+    label: "Careers",
+    // No standalone careers landing page — same convention as Services: the
+    // label opens on Open Positions, the dropdown is how Join Us is reached.
+    href: "/careers/open-positions",
+    children: [
+      { label: "Join Us", href: "/careers/join-us" },
+      { label: "Open Positions", href: "/careers/open-positions" },
+    ],
+  },
 ];
 
 export const companyLinks: NavChild[] = [
   { label: "About Us", href: "/about" },
-  { label: "Careers", href: "/careers" },
+  { label: "Careers", href: "/careers/open-positions" },
   { label: "Contact", href: "/contact" },
 ];

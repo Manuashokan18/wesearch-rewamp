@@ -5,6 +5,7 @@ import {
   ProcessRoadmap,
   ProcessTimeline,
 } from "@/components/sections/ProcessFlow";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 import { ImageCards } from "@/components/ui/cards";
 import type { ServiceDetailPage } from "@/lib/data/services";
 import { Highlighted, SectionHeading } from "./parts";
@@ -60,6 +61,7 @@ function PhotoProcess({ process, fallback }: { process: Process; fallback: strin
         <ImageCards
           items={cards}
           ordered
+          animated
           className={oneRow ? "mt-14 sm:grid-cols-3 lg:grid-cols-5 lg:gap-6" : "mt-12"}
         />
       </div>
@@ -106,12 +108,15 @@ function TimelineProcess({ process }: { process: Process }) {
   return (
     <section id="process" className="scroll-mt-20 border-t border-line bg-muted">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16 lg:py-24">
+        {/* Content-only wrap: the sticky div itself stays untransformed so its pin isn't disturbed. */}
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <Eyebrow>{process.eyebrow}</Eyebrow>
-          <h2 className="text-section-lg text-ink">
-            <Highlighted text={process.title} highlight={process.highlight} />
-          </h2>
-          <p className="mt-4 max-w-[40ch] text-subtle">{process.subtitle}</p>
+          <AnimatedContainer direction="left">
+            <Eyebrow>{process.eyebrow}</Eyebrow>
+            <h2 className="text-section-lg text-ink">
+              <Highlighted text={process.title} highlight={process.highlight} />
+            </h2>
+            <p className="mt-4 max-w-[40ch] text-subtle">{process.subtitle}</p>
+          </AnimatedContainer>
         </div>
 
         <ProcessTimeline steps={process.steps} />

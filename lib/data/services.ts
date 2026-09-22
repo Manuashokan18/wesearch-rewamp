@@ -560,7 +560,9 @@ export const services: Service[] = [
         description:
           "Let's discuss how WeSearch can help you build a more structured, transparent and scalable MSP model.",
         primaryLabel: "Talk to Our MSP Team →",
-        secondaryLabel: "Explore All Services",
+        // The content doc's own secondary button, same as Contract Staffing's.
+        secondaryLabel: "Contact Us →",
+        secondaryHref: "/contact",
         assurances: [
           { icon: ClipboardCheck, label: "Standardised SLAs & governance" },
           { icon: Layers, label: "Supplier performance scorecards" },
@@ -780,7 +782,9 @@ export const services: Service[] = [
         description:
           "Let's discuss how an RPO model can help you build a more scalable and efficient recruitment engine.",
         primaryLabel: "Talk to Our RPO Team →",
-        secondaryLabel: "Explore All Services",
+        // The content doc's own secondary button, same as Contract Staffing's.
+        secondaryLabel: "Contact Us →",
+        secondaryHref: "/contact",
         assurances: [
           { icon: TrendingUp, label: "Recruitment capacity that scales" },
           { icon: ClipboardCheck, label: "Structured workflows & SLAs" },
@@ -1006,7 +1010,9 @@ export const services: Service[] = [
         description:
           "Let's discuss how WeSearch can support your payroll and workforce management requirements.",
         primaryLabel: "Talk to Our Payroll Team →",
-        secondaryLabel: "Explore All Services",
+        // The content doc's own secondary button, same as Contract Staffing's.
+        secondaryLabel: "Contact Us →",
+        secondaryHref: "/contact",
         assurances: [
           { icon: Calculator, label: "Accurate, timely payroll cycles" },
           { icon: ShieldCheck, label: "Statutory compliance support" },
@@ -1239,7 +1245,9 @@ export const services: Service[] = [
         description:
           "Let's discuss how WeSearch can support your GCC talent and hiring requirements.",
         primaryLabel: "Talk to Our GCC Team →",
-        secondaryLabel: "Explore All Services",
+        // The content doc's own secondary button, same as Contract Staffing's.
+        secondaryLabel: "Contact Us →",
+        secondaryHref: "/contact",
         assurances: [
           { icon: Building2, label: "Setup to scale-up hiring" },
           { icon: Target, label: "Leadership & specialist talent" },
@@ -1451,7 +1459,9 @@ export const services: Service[] = [
         title: "Looking for the Right Talent to Drive Your Business Forward?",
         description: "Let's discuss your permanent hiring requirements.",
         primaryLabel: "Talk to Our Hiring Team →",
-        secondaryLabel: "Explore All Services",
+        // The content doc's own secondary button, same as Contract Staffing's.
+        secondaryLabel: "Contact Us →",
+        secondaryHref: "/contact",
         assurances: [
           { icon: Briefcase, label: "Leadership to specialist roles" },
           { icon: ClipboardCheck, label: "Structured screening & assessment" },

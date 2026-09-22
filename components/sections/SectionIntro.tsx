@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AnimatedContainer } from "@/components/ui/animated-container";
 
 type SectionIntroProps = {
   eyebrow?: string;
@@ -31,7 +32,7 @@ export function SectionIntro({
   const headingClass = size === "page" ? "text-section-lg" : "text-section";
 
   return (
-    <div className={center ? "mx-auto max-w-2xl text-center" : ""}>
+    <AnimatedContainer className={center ? "mx-auto max-w-2xl text-center" : ""}>
       {eyebrow && (
         <Eyebrow center={center}>{eyebrow}</Eyebrow>
       )}
@@ -46,7 +47,7 @@ export function SectionIntro({
         </p>
       )}
       {children}
-    </div>
+    </AnimatedContainer>
   );
 }
 
