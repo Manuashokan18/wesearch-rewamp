@@ -333,6 +333,7 @@ export function OpenPositions({ jobs }: { jobs: JobPosting[] }) {
                       alt=""
                       fill
                       sizes="(min-width: 640px) 7rem, 100vw"
+                      priority={index === 0}
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
