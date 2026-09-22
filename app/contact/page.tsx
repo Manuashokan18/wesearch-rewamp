@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
-import { ArrowUpRight, Asterisk, Mail, Phone } from "lucide-react";
+import { Asterisk, Mail, Phone } from "lucide-react";
 import { AnimatedContainer } from "@/components/ui/animated-container";
 import { DotGridBackground } from "@/components/ui/dot-grid-background";
 import { contactEmail } from "@/lib/config/site";
@@ -55,11 +55,6 @@ const glowBackground: CSSProperties = {
     "radial-gradient(34% 40% at 38% 54%, oklch(0.7 0.15 245 / 0.26), transparent 76%)",
   ].join(", "),
 };
-
-/** Opens the address in Google Maps' search, which resolves a free-text address. */
-function mapsUrl(address: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-}
 
 /** Staggers the load-in of the first screen; the `hero-rise` keyframes are in globals.css. */
 function rise(step: number) {
@@ -186,20 +181,6 @@ export default function ContactPage() {
                       {office.address}
                     </address>
                   </div>
-
-                  <a
-                    href={mapsUrl(office.address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl border border-ink px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:border-transparent hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                  >
-                    View Location
-                    <ArrowUpRight className="size-4" aria-hidden="true" />
-                    <span className="sr-only">
-                      {" "}
-                      for {office.label} on Google Maps (opens in a new tab)
-                    </span>
-                  </a>
                 </article>
               </AnimatedContainer>
             </li>

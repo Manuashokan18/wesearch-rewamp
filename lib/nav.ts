@@ -27,6 +27,10 @@ export type NavItem = {
   label: string;
   href: string;
   children?: NavChild[];
+  // Services intentionally opens on its first child when the label itself is
+  // clicked (see below). Careers doesn't have an equivalent landing page, so
+  // its label should only ever toggle the dropdown, never navigate.
+  clickOpensDropdownOnly?: boolean;
 };
 
 export const primaryNav: NavItem[] = [
@@ -49,9 +53,11 @@ export const primaryNav: NavItem[] = [
   { label: "Contact", href: "/contact" },
   {
     label: "Careers",
-    // No standalone careers landing page — same convention as Services: the
-    // label opens on Open Positions, the dropdown is how Join Us is reached.
+    // No standalone careers landing page, but unlike Services the label
+    // shouldn't jump straight to a child — clicking it should just reveal
+    // the dropdown.
     href: "/careers/open-positions",
+    clickOpensDropdownOnly: true,
     children: [
       { label: "Join Us", href: "/careers/join-us" },
       { label: "Open Positions", href: "/careers/open-positions" },
