@@ -19,6 +19,9 @@ export function Header() {
    * rests there; this holds one shut until the pointer comes back to it.
    */
   const [dismissedMenu, setDismissedMenu] = useState<string | null>(null);
+  // For dropdowns whose label has no page of its own (Careers), a click
+  // toggles the menu open directly instead of relying on hover.
+  const [clickOpenedMenu, setClickOpenedMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -91,25 +94,50 @@ export function Header() {
                 <div
                   key={item.href}
                   className="group relative"
-                  onMouseLeave={() => setDismissedMenu(null)}
+                  onMouseLeave={() => {
+                    setDismissedMenu(null);
+                    setClickOpenedMenu(null);
+                  }}
                 >
-                  <Link
-                    href={item.href}
-                    onMouseEnter={() => setDismissedMenu(null)}
-                    onClick={() => setDismissedMenu(item.href)}
-                    className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                      groupActive
-                        ? isOverHero
-                          ? "text-accent-soft"
-                          : "text-accent"
-                        : isOverHero
-                          ? "text-white/75 hover:text-white"
-                          : "text-ink/80 hover:text-ink"
-                    }`}
-                  >
-                    {item.label}
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  </Link>
+                  {item.clickOpensDropdownOnly ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setClickOpenedMenu((current) => (current === item.href ? null : item.href))
+                      }
+                      aria-expanded={clickOpenedMenu === item.href}
+                      className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                        groupActive
+                          ? isOverHero
+                            ? "text-accent-soft"
+                            : "text-accent"
+                          : isOverHero
+                            ? "text-white/75 hover:text-white"
+                            : "text-ink/80 hover:text-ink"
+                      }`}
+                    >
+                      {item.label}
+                      <ChevronDown className="h-3.5 w-3.5" />
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onMouseEnter={() => setDismissedMenu(null)}
+                      onClick={() => setDismissedMenu(item.href)}
+                      className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                        groupActive
+                          ? isOverHero
+                            ? "text-accent-soft"
+                            : "text-accent"
+                          : isOverHero
+                            ? "text-white/75 hover:text-white"
+                            : "text-ink/80 hover:text-ink"
+                      }`}
+                    >
+                      {item.label}
+                      <ChevronDown className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
                   {groupActive && (
                     <span
                       className={`absolute -bottom-6 left-0 h-0.5 w-full ${
@@ -118,8 +146,12 @@ export function Header() {
                     />
                   )}
                   <div
-                    className={`invisible absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition-opacity ${
-                      dismissedMenu === item.href ? "" : "group-hover:visible group-hover:opacity-100"
+                    className={`absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition-opacity ${
+                      clickOpenedMenu === item.href
+                        ? "visible opacity-100"
+                        : dismissedMenu === item.href
+                          ? "invisible"
+                          : "invisible group-hover:visible group-hover:opacity-100"
                     }`}
                   >
                     <div className="rounded-2xl border border-line bg-surface p-3 shadow-lg">
@@ -129,7 +161,10 @@ export function Header() {
                           <Link
                             key={child.href}
                             href={child.href}
-                            onClick={() => setDismissedMenu(item.href)}
+                            onClick={() => {
+                              setDismissedMenu(item.href);
+                              setClickOpenedMenu(null);
+                            }}
                             aria-current={isCurrent ? "page" : undefined}
                             className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
                               isCurrent
